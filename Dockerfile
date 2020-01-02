@@ -13,6 +13,7 @@ LABEL com.github.actions.color="gray-dark"
 COPY LICENSE README.md jq /
 COPY entrypoint.sh /entrypoint.sh
 
+RUN chmod +x /jq
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
