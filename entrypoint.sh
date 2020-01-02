@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -e
 
 if [ -z "$webhook_url" ]; then
     echo "No webhook_url configured"
