@@ -20,9 +20,9 @@ fi
 
 if [ "$CONTENT_TYPE" == "text/csv" ]; then
     
-    DATA_CSV="\"$GITHUB_REPOSITORY\",\"$GITHUB_REF\",\"$GITHUB_SHA\",\"$GITHUB_EVENT_NAME\",\"$GITHUB_WORKFLOW\""
+    DATA_CSV="\"$GITHUB_REPOSITORY\";\"$GITHUB_REF\";\"$GITHUB_SHA\";\"$GITHUB_EVENT_NAME\";\"$GITHUB_WORKFLOW\""
     if [ -n "$data" ]; then
-        WEBHOOK_DATA="$DATA_CSV,$data"
+        WEBHOOK_DATA="$DATA_CSV;$data"
     else
         WEBHOOK_DATA="$DATA_CSV"
     fi
