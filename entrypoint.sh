@@ -31,9 +31,7 @@ else
 
     DATA_JSON="\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_REF\",\"commit\":\"$GITHUB_SHA\",\"trigger\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\""
     if [ -n "$data" ]; then
-        echo "$data"
         COMPACT_JSON=$(echo -n "$data" | /jq -c '')
-        echo "$COMPACT_JSON"
         WEBHOOK_DATA="{$DATA_JSON,\"data\":$COMPACT_JSON}"
     else
         WEBHOOK_DATA="{$DATA_JSON}"
@@ -41,7 +39,6 @@ else
 
 fi
 
-WEBHOOK_DATA="{\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_REF\",\"commit\":\"$GITHUB_SHA\",\"trigger\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\"}"
 WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
 
 curl -X POST -H "content-type: $CONTENT_TYPE" -H "x-hub-signature: sha1=$WEBHOOK_SIGNATURE" -H "x-github-event: $GITHUB_EVENT_NAME" --data "$WEBHOOK_DATA" $webhook_url
