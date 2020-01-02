@@ -10,6 +10,8 @@ LABEL com.github.actions.description="An action that will call a webhook from yo
 LABEL com.github.actions.icon="upload-cloud"
 LABEL com.github.actions.color="gray-dark"
 
+RUN apt-get update && apt-get install -y curl openssl xxd
+
 COPY LICENSE README.md jq /
 COPY entrypoint.sh /entrypoint.sh
 
