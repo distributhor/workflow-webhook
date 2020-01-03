@@ -103,14 +103,14 @@ an HTTP POST request. <br/><br/>
   webhook_secret: "Y0uR5ecr3t"
 ```
 
-**Required**. The secret with which to generate the signature hash.
+**Required**. The secret with which to generate the signature hash. <br/><br/>
 
 ```yml 
   data_type: "json | csv"
 ```
 
 The default data type is json. The argument is only required if you wish to send CSV. 
-Otherwise it's optional.
+Otherwise it's optional. <br/><br/>
 
 ```yml 
   data: '{ "additional": "properties" }'
@@ -130,7 +130,7 @@ otherwise the workflow job will break with an error.
 For CSV data, it must be a list value of values separated by `;` and ideally the values 
 should be quoted with `"`. The values will be appended to the default set of fields that 
 are sent. No header is added to the CSV, and the first 5 fields will always be 
-`repository;ref;commit;event;workflow`. 
+`repository;ref;commit;event;workflow`. <br/><br/>
 
 
 ## License
