@@ -41,7 +41,7 @@ Will deliver a payload with the following properties:
     "workflow": "Build and deploy"
 }
 ```
-<br/><br/>
+<br/>
 
 Add additional data to the payload:
 
@@ -70,7 +70,7 @@ and now look like:
     }
 }
 ```
-<br/><br/>
+<br/>
 
 Send a CSV payload instead:
 
