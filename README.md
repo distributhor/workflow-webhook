@@ -147,6 +147,6 @@ are sent. No header entry is added to the CSV, and the first 5 fields will alway
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
-[ico-release]: https://img.shields.io/github/tag/distributhor/webhook-action.svg
+[ico-release]: https://img.shields.io/github/tag/distributhor/workflow-webhook.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [link-github-release]: https://github.com/distributhor/workflow-webhook/releases
