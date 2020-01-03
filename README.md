@@ -115,23 +115,23 @@ The default data type is json. The argument is only required if you wish to send
 Otherwise it's optional. <br/><br/>
 
 ```yml 
-  data: '{ "additional": "properties" }'
+  data: "Additional json or csv"
 ```
 
-Any additional data to include in the payload. The argument is optional if the default 
+Additional data to include in the payload. The argument is optional if the default 
 fields are sufficient and you wish to provide no further information.
 
 For JSON data, it will be available on a property named `data`. The additional data 
-will be run through a json validator, and any invalid configuration will break. For 
-example, if you quote json properties and values with single quotes instead of double 
-quotes you will see the following (somewhat confusing) message in your workflow output: 
-`Invalid numeric literal`. Such messages are the direct output from the validation 
-library <https://stedolan.github.io/jq/>. The supplied json must pass a run through `jq`, 
-otherwise the workflow job will break with an error.
+will be run through a json validator, and any invalid configuration will cause the
+action to break and exit. For example, if you quote json properties and values with 
+single quotes instead of double quotes you will see the following (somewhat confusing) 
+message in your workflow output: `Invalid numeric literal`. Such messages are the direct 
+output from the validation library <https://stedolan.github.io/jq/>. The supplied json 
+must pass a run through `jq`, otherwise the workflow job will exit with an error.
 
 For CSV data, it must be a list value of values separated by `;` and ideally the values 
 should be quoted with `"`. The values will be appended to the default set of fields that 
-are sent. No header is added to the CSV, and the first 5 fields will always be 
+are sent. No header entry is added to the CSV, and the first 5 fields will always be 
 `repository;ref;commit;event;workflow`. <br/><br/>
 
 
