@@ -91,13 +91,13 @@ Will set the `content-type` header to `text/csv` and deliver:
 ```
 
 
-### Arguments
+## Arguments
 
 ```yml 
   webhook_url: "https://your.webhook"
 ```
 
-**Required**. The HTTP URI of the webhook endpoint to invoke. The endpoint must accept 
+*Required*. The HTTP URI of the webhook endpoint to invoke. The endpoint must accept 
 an HTTP POST request. <br/><br/>
 
 
@@ -105,7 +105,7 @@ an HTTP POST request. <br/><br/>
   webhook_secret: "Y0uR5ecr3t"
 ```
 
-**Required**. The secret with which to generate the signature hash. <br/><br/>
+*Required*. The secret with which to generate the signature hash. <br/><br/>
 
 ```yml 
   webhook_auth: "username:password"
