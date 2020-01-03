@@ -24,7 +24,7 @@ Send the default JSON payload to a webhook:
 
 ```yml
     - name: Invoke deployment hook
-      uses: distributhor/workflow-webhook@master
+      uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
@@ -47,7 +47,7 @@ Add additional data to the payload:
 
 ```yml
     - name: Invoke deployment hook
-      uses: distributhor/workflow-webhook@master
+      uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
@@ -76,7 +76,7 @@ Send a CSV payload instead:
 
 ```yml
     - name: Invoke deployment hook
-      uses: distributhor/workflow-webhook@master
+      uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}

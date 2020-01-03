@@ -2,7 +2,6 @@ FROM ubuntu:bionic
 
 LABEL "name"="bash"
 LABEL "repository"="https://github.com/distributhor/workflow-webhook"
-LABEL "maintainer"="distributhor"
 LABEL "version"="1.0.0"
 
 LABEL com.github.actions.name="Workflow Webhook"
