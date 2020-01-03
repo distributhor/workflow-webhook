@@ -108,6 +108,14 @@ an HTTP POST request. <br/><br/>
 **Required**. The secret with which to generate the signature hash. <br/><br/>
 
 ```yml 
+  webhook_auth: "username:password"
+```
+
+Credentials to be used for BASIC authentication against the endpoint. If not configured,
+authentication is assumed not to be required. If configured, it must follow the format
+`username:password`, which will be used as the BASIC auth credential.<br/><br/>
+
+```yml 
   data_type: "json | csv"
 ```
 
