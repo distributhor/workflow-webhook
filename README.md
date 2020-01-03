@@ -17,6 +17,7 @@ and `GITHUB_WORKFLOW`. For more information on what is contained in these variab
 see <https://help.github.com/en/actions/automating-your-workflow-with-github-actions/using-environment-variables>. 
 Additional data can be added to the payload as well.
 
+
 ## Usage
 
 Send the default JSON payload to a webhook:
@@ -87,30 +88,35 @@ Will set the `content-type` header to `text/csv` and deliver:
 "owner/project";"refs/heads/master";"a636b6f0861bbee98039bf3df66ee13d8fbc9c74";"push";"Build and deploy";"hammer";"beer"
 ```
 
-No header entry is provded for the CSV, the first 5 fields will always be
-`repository;ref;commit;event;workflow`. The data property is optional if 
-the default fields are sufficient.
-
 
 ### Arguments
 
-* ```yml 
+```yml 
   webhook_url: "https://your.webhook"
-  ```
+```
 
-  The HTTP URI of the webhook endpoint to invoke. The endpoint must accept an 
-  HTTP POST request.
+**Required**. The HTTP URI of the webhook endpoint to invoke. The endpoint must accept 
+an HTTP POST request.
 
-* ```yml 
+```yml 
   webhook_secret: "Y0uR5ecr3t"
-  ```
+```
 
-  The secret with which to generate the signature hash.
+**Required**. The secret with which to generate the signature hash.
 
-* ```yml 
+```yml 
+  data_type: "json | csv"
+```
+
+The default data type is json. The argument is only required if you wish to send CSV. 
+Otherwise it's optional.
+
+```yml 
   data: '{ "additional": "properties" }'
-  ```
-Any additional data to include in the payload. 
+```
+
+Any additional data to include in the payload. The argument is optional if the default 
+fields are sufficient and you wish to provide no further information.
 
 For JSON data, it will be available on a property named `data`. The additional data 
 will be run through a json validator, and any invalid configuration will break. For 
@@ -122,14 +128,8 @@ otherwise the workflow job will break with an error.
 
 For CSV data, it must be a list value of values separated by `;` and ideally the values 
 should be quoted with `"`. The values will be appended to the default set of fields that 
-are sent.
-
-* ```yml 
-  data_type: "json | csv"
-  ```
-
-The default data type is json, so the argument is only required if you wish to send CSV. 
-Otherwise it's optional.
+are sent. No header is added to the CSV, and the first 5 fields will always be 
+`repository;ref;commit;event;workflow`. 
 
 
 ## License
