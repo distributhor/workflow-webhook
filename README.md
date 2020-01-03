@@ -20,6 +20,8 @@ Additional data can be added to the payload as well.
 
 ## Usage
 
+The following are example snippets for a Github yaml workflow configuration. <br/>
+
 Send the default JSON payload to a webhook:
 
 ```yml
