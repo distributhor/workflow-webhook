@@ -9,7 +9,7 @@ with each request, derived from the payload and a configurable secret token. The
 hash signature is identical to that which a regular Github webhook would generate, 
 and sent in a header field named `X-Hub-Signature`. Therefore any existing Github 
 webhook signature validation will continue to work. For more information on how to 
-valiate the signature, see <https://developer.github.com/webhooks/securing>.
+validate the signature, see <https://developer.github.com/webhooks/securing>.
 
 By default, the values of the following workflow environment variables are sent in 
 the payload: `GITHUB_REPOSITORY`, `GITHUB_REF`, `GITHUB_SHA`, `GITHUB_EVENT_NAME` 
