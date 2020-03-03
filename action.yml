@@ -9,9 +9,6 @@ inputs:
     required: true
   webhook_auth:
     description: 'Credentials to be used for BASIC authentication'
-  data_type:
-    description: 'The data format of the payload. Can be either one of "json" or "csv".'
-    default: 'json'
   data:
     description: 'Who to greet'
     default: 'json'
