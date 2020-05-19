@@ -33,8 +33,8 @@ fi
 curl -X POST \ 
     -H "content-type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
-    -H "x-hub-signature: sha1=$WEBHOOK_SIGNATURE" \
-    -H "x-gitHub-delivery: $GITHUB_RUN_NUMBER" \
-    -H "x-github-event: $GITHUB_EVENT_NAME" \
+    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+    -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+    -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
     # -D - $WEBHOOK_ENDPOINT --data-urlencode @"$GITHUB_EVENT_PATH"
