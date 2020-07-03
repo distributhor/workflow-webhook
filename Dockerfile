@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM alpine
 
 LABEL "name"="bash"
 LABEL "repository"="https://github.com/distributhor/workflow-webhook"
@@ -9,7 +9,7 @@ LABEL com.github.actions.description="An action that will call a webhook from yo
 LABEL com.github.actions.icon="upload-cloud"
 LABEL com.github.actions.color="gray-dark"
 
-RUN apt-get update && apt-get install -y curl openssl xxd jq
+RUN apk add --no-cache bash curl openssl xxd jq
 
 COPY LICENSE README.md /
 COPY entrypoint.sh /entrypoint.sh
