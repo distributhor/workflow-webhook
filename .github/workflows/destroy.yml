@@ -1,0 +1,18 @@
+name: Continuous Destruction
+
+on:
+  delete:
+
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  send-deploy-webhook:
+    name: Deploy Webhook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow Webhook Action
+        uses: ingkagero/workflow-webhook@master
+        env:
+          webhook_url: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+          webhook_secret: ${{ secrets.DEPLOY_WEBHOOK_SECRET }}
