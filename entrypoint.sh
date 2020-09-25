@@ -30,11 +30,11 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-curl -q --fail -o - -X POST \
-    -H "content-type: application/json" \
-    -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
-    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-    -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
-    -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
-    --data "$WEBHOOK_DATA" $webhook_url
+wget -q -o - \
+    --header="content-type: application/json" \
+    --header="User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+    --header="X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+    --header="X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+    --header="X-GitHub-Event: $GITHUB_EVENT_NAME" \
+    --post-data "$WEBHOOK_DATA" $webhook_url
     # -D - $WEBHOOK_ENDPOINT --data-urlencode @"$GITHUB_EVENT_PATH"
