@@ -30,7 +30,7 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-wget -q -o - \
+wget -q --content-on-error -o - \
     --header="content-type: application/json" \
     --header="User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     --header="X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
