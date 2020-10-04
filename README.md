@@ -29,7 +29,7 @@ These values map to the payload as follows:
 }
 ```
 
-Additional (custom) data can be added to the payload as well.
+Additional (custom) data can be added to the payload as well (see further down).
 
 
 ## Usage
