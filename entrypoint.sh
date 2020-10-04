@@ -20,7 +20,7 @@ fi
 
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
     CONTENT_TYPE="application/x-www-form-urlencoded"
-    FORM_DATA="repository=$GITHUB_REPOSITORY&ref=$GITHUB_REF&head=$GITHUB_HEAD_REF&commit=$GITHUB_SHA&event=$GITHUB_EVENT_NAME&workflow=$GITHUB_WORKFLOW"
+    FORM_DATA="event=$GITHUB_EVENT_NAME&repository=$GITHUB_REPOSITORY&commit=$GITHUB_SHA&ref=$GITHUB_REF&head=$GITHUB_HEAD_REF&workflow=$GITHUB_WORKFLOW"
     if [ -n "$data" ]; then
         WEBHOOK_DATA="$FORM_DATA&$data"
     else
@@ -28,7 +28,7 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
     fi
 else
     CONTENT_TYPE="application/json"
-    JSON_DATA="\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"commit\":\"$GITHUB_SHA\",\"event\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\""
+    JSON_DATA="\"event\":\"$GITHUB_EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\""
     if [ -n "$data" ]; then
         COMPACT_JSON=$(echo -n "$data" | jq -c '')
         WEBHOOK_DATA="{$JSON_DATA,\"data\":$COMPACT_JSON}"
@@ -39,7 +39,7 @@ fi
 
 WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
 
-echo "$CONTENT_TYPE $WEBHOOK_ENDPOINT"
+echo "$CONTENT_TYPE $webhook_url"
 
 curl -k -v \
     -H "Content-Type: $CONTENT_TYPE" \
