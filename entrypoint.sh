@@ -12,7 +12,7 @@ if [ -z "$webhook_secret" ]; then
     exit 1
 fi
 
-DATA_JSON="\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_HEAD_REF\",\"commit\":\"$GITHUB_SHA\",\"trigger\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\""
+DATA_JSON="\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"commit\":\"$GITHUB_SHA\",\"event\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\""
 
 if [ -n "$data" ]; then
     COMPACT_JSON=$(echo -n "$data" | jq -c '')
