@@ -12,7 +12,7 @@ if [ -z "$webhook_secret" ]; then
     exit 1
 fi
 
-DATA_JSON="\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_REF\",\"commit\":\"$GITHUB_SHA\",\"trigger\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\""
+DATA_JSON="\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_HEAD_REF\",\"commit\":\"$GITHUB_SHA\",\"trigger\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\""
 
 if [ -n "$data" ]; then
     COMPACT_JSON=$(echo -n "$data" | jq -c '')
@@ -30,11 +30,20 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-curl -X POST \ 
+curl -k --trace-ascii /dev/stdout -v --fail -X POST \ 
     -H "content-type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
-    -H "x-hub-signature: sha1=$WEBHOOK_SIGNATURE" \
-    -H "x-gitHub-delivery: $GITHUB_RUN_NUMBER" \
-    -H "x-github-event: $GITHUB_EVENT_NAME" \
+    -H "X-Sub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+    -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+    -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
     # -D - $WEBHOOK_ENDPOINT --data-urlencode @"$GITHUB_EVENT_PATH"
+
+# wget -q --server-response --timeout=2000 -O - \
+#    --header="content-type: application/json" \
+#    --header="User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+#    --header="X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+#    --header="X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+#    --header="X-GitHub-Event: $GITHUB_EVENT_NAME" \
+#    --post-data "$WEBHOOK_DATA" $webhook_url
+#    # --http-user user --http-password

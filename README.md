@@ -12,7 +12,7 @@ validation will continue to work. For more information on how to valiate the sig
 see <https://developer.github.com/webhooks/securing>.
 
 By default, the values of the following workflow environment variables are sent in the 
-payload: `GITHUB_REPOSITORY`, `GITHUB_REF`, `GITHUB_SHA`, `GITHUB_EVENT_NAME` and 
+payload: `GITHUB_REPOSITORY`, `GITHUB_HEAD_REF`, `GITHUB_SHA`, `GITHUB_EVENT_NAME` and 
 `GITHUB_WORKFLOW`. For more information on what is contained in these variables, see 
 <https://help.github.com/en/actions/automating-your-workflow-with-github-actions/using-environment-variables>. 
 
