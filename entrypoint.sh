@@ -34,7 +34,7 @@ fi
 #   "curl --trace-ascii /dev/stdout" is an alternative to "curl -v", and includes 
 #   the posted data in the output. However, it can't do so for multipart/form-data
 
-curl -k -v --fail \
+curl -k -v \
     -H "Content-Type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
