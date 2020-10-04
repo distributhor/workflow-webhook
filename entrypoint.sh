@@ -34,8 +34,9 @@ fi
 # --trace-ascii will display post data in verbose mode, so no need for -v,
 # but it doesn't work with multipart/form-data. Eg:
 # curl -k --trace-ascii /dev/stdout --fail -X POST \ 
+# curl -k -v --fail -X POST \
 
-curl -k -v --fail -X \
+curl -k --trace-ascii /dev/stdout -X POST \
     -H "Content-Type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
