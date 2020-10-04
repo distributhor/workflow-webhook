@@ -35,7 +35,7 @@ fi
 # but it doesn't work with multipart/form-data. Eg:
 # curl -k --trace-ascii /dev/stdout --fail -X POST \ 
 
-curl -k -v --fail POST \
+curl -k -v --fail -X \
     -H "Content-Type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Sub-Signature: sha1=$WEBHOOK_SIGNATURE" \
