@@ -30,13 +30,11 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-# Curl note:
-# --trace-ascii will display post data in verbose mode, so no need for -v,
-# but it doesn't work with multipart/form-data. Eg:
-# curl -k --trace-ascii /dev/stdout --fail -X POST \ 
-# curl -k -v --fail -X POST \
+# Note:
+#   "curl --trace-ascii /dev/stdout" is an alternative to "curl -v", and includes 
+#   the posted data in the output. However, it can't do so for multipart/form-data
 
-curl -k -v \
+curl -k -v --fail \
     -H "Content-Type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
