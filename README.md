@@ -104,7 +104,7 @@ Send a form-urlencoded payload instead:
 Will set the `Content-Type` header to `application/x-www-form-urlencoded` and deliver:
 
 ```csv
-"even=push&repository=owner/project&commit=a636b6f0861bbee98039bf3df66ee13d8fbc9c74&ref=refs/heads/master&head=&weapon=hammer&drink=beer"
+"event=push&repository=owner/project&commit=a636b6f0861bbee98039bf3df66ee13d8fbc9c74&ref=refs/heads/master&head=&weapon=hammer&drink=beer"
 ```
 
 ## Arguments
