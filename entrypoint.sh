@@ -12,30 +12,37 @@ if [ -z "$webhook_secret" ]; then
     exit 1
 fi
 
-DATA_JSON="\"repository\":\"$GITHUB_REPOSITORY\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"commit\":\"$GITHUB_SHA\",\"event\":\"$GITHUB_EVENT_NAME\",\"workflow\":\"$GITHUB_WORKFLOW\""
-
-if [ -n "$data" ]; then
-    COMPACT_JSON=$(echo -n "$data" | jq -c '')
-    WEBHOOK_DATA="{$DATA_JSON,\"data\":$COMPACT_JSON}"
-    # WEBHOOK_DATA=$(jq -c . $GITHUB_EVENT_PATH)
-else
-    WEBHOOK_DATA="{$DATA_JSON}"
-fi
-
-WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
-# WEBHOOK_SIGNATURE=$(cat "$GITHUB_EVENT_PATH" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
-
 WEBHOOK_ENDPOINT=$webhook_url
+
 if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-# Note:
-#   "curl --trace-ascii /dev/stdout" is an alternative to "curl -v", and includes 
-#   the posted data in the output. However, it can't do so for multipart/form-data
+if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
+    CONTENT_TYPE="application/x-www-form-urlencoded"
+    FORM_DATA="event=$GITHUB_EVENT_NAME&repository=$GITHUB_REPOSITORY&commit=$GITHUB_SHA&ref=$GITHUB_REF&head=$GITHUB_HEAD_REF&workflow=$GITHUB_WORKFLOW"
+    if [ -n "$data" ]; then
+        WEBHOOK_DATA="$FORM_DATA&$data"
+    else
+        WEBHOOK_DATA="$FORM_DATA"
+    fi
+else
+    CONTENT_TYPE="application/json"
+    JSON_DATA="\"event\":\"$GITHUB_EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\""
+    if [ -n "$data" ]; then
+        COMPACT_JSON=$(echo -n "$data" | jq -c '')
+        WEBHOOK_DATA="{$JSON_DATA,\"data\":$COMPACT_JSON}"
+    else
+        WEBHOOK_DATA="{$JSON_DATA}"
+    fi
+fi
+
+WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
+
+echo "Content Type: $CONTENT_TYPE"
 
 curl -k -v \
-    -H "Content-Type: application/json" \
+    -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
     -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
