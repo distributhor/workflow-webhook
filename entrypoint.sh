@@ -35,8 +35,8 @@ fi
 # but it doesn't work with multipart/form-data. Eg:
 # curl -k --trace-ascii /dev/stdout --fail -X POST \ 
 
-curl -k -v --fail -X POST \ 
-    -H "content-type: application/json" \
+curl -k -v --fail -X POST \
+    -H "Content-Type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Sub-Signature: sha1=$WEBHOOK_SIGNATURE" \
     -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
@@ -45,7 +45,7 @@ curl -k -v --fail -X POST \
     # -D - $WEBHOOK_ENDPOINT --data-urlencode @"$GITHUB_EVENT_PATH"
 
 # wget -q --server-response --timeout=2000 -O - \
-#    --header="content-type: application/json" \
+#    --header="Content-Type: application/json" \
 #    --header="User-Agent: User-Agent: GitHub-Hookshot/760256b" \
 #    --header="X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
 #    --header="X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
