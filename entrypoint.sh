@@ -30,7 +30,12 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-curl -k --trace-ascii /dev/stdout -v --fail -X POST \ 
+# Curl note:
+# --trace-ascii will display post data in verbose mode, so no need for -v,
+# but it doesn't work with multipart/form-data. Eg:
+# curl -k --trace-ascii /dev/stdout --fail -X POST \ 
+
+curl -k -v --fail -X POST \ 
     -H "content-type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Sub-Signature: sha1=$WEBHOOK_SIGNATURE" \
