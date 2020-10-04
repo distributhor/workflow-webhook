@@ -36,7 +36,7 @@ fi
 # curl -k --trace-ascii /dev/stdout --fail -X POST \ 
 # curl -k -v --fail -X POST \
 
-curl -k -v POST \
+curl -k -v \
     -H "Content-Type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
