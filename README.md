@@ -11,12 +11,25 @@ field named `X-Hub-Signature`. Therefore any existing Github webhook signature
 validation will continue to work. For more information on how to valiate the signature, 
 see <https://developer.github.com/webhooks/securing>.
 
-By default, the values of the following workflow environment variables are sent in the 
-payload: `GITHUB_REPOSITORY`, `GITHUB_REF`, `GITHUB_SHA`, `GITHUB_EVENT_NAME` and 
-`GITHUB_WORKFLOW`. For more information on what is contained in these variables, see 
+By default, the values of the following GitHub workflow environment variables are sent in the 
+payload: `GITHUB_REPOSITORY`, `GITHUB_REF`, `GITHUB_HEAD_REF`, `GITHUB_SHA`, `GITHUB_EVENT_NAME` 
+and `GITHUB_WORKFLOW`. For more information on what is contained in these variables, see 
 <https://help.github.com/en/actions/automating-your-workflow-with-github-actions/using-environment-variables>. 
 
-Additional (custom) data can be added to the payload as well.
+These values map to the payload as follows:
+
+```json
+{
+    "repository": "GITHUB_REPOSITORY",
+    "ref": "GITHUB_REF",
+    "head": "GITHUB_HEAD_REF",
+    "commit": "GITHUB_SHA",
+    "event": "GITHUB_EVENT_NAME",
+    "workflow": "GITHUB_WORKFLOW"
+}
+```
+
+Additional (custom) data can be added to the payload as well (see further down).
 
 
 ## Usage
@@ -39,6 +52,7 @@ Will deliver a payload with the following properties:
 {
     "repository": "owner/project",
     "ref": "refs/heads/master",
+    "head": "",
     "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
     "event": "push",
     "workflow": "Build and deploy"
@@ -64,6 +78,7 @@ and now look like:
 {
     "repository": "owner/project",
     "ref": "refs/heads/master",
+    "head": "",
     "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
     "event": "push",
     "workflow": "Build and deploy",
