@@ -3,8 +3,8 @@
 [![GitHub Release][ico-release]][link-github-release]
 [![License][ico-license]](LICENSE)
 
-A Github workflow action to call (POST) a remote webhook endpoint with a json payload, 
-and support for BASIC authentication. A hash signature is passed with each request, 
+A Github workflow action to call (POST) a remote webhook endpoint with a json or form-urlencoded
+payload, and support for BASIC authentication. A hash signature is passed with each request, 
 derived from the payload and a configurable secret token. The hash signature is 
 identical to that which a regular Github webhook would generate, and sent in a header 
 field named `X-Hub-Signature`. Therefore any existing Github webhook signature 
@@ -20,11 +20,11 @@ These values map to the payload as follows:
 
 ```json
 {
+    "event": "GITHUB_EVENT_NAME",
     "repository": "GITHUB_REPOSITORY",
+    "commit": "GITHUB_SHA",
     "ref": "GITHUB_REF",
     "head": "GITHUB_HEAD_REF",
-    "commit": "GITHUB_SHA",
-    "event": "GITHUB_EVENT_NAME",
     "workflow": "GITHUB_WORKFLOW"
 }
 ```
@@ -36,7 +36,7 @@ Additional (custom) data can be added to the payload as well (see further down).
 
 The following are example snippets for a Github yaml workflow configuration. <br/>
 
-Send the default JSON payload to a webhook:
+Send the JSON (default) payload to a webhook:
 
 ```yml
     - name: Invoke deployment hook
@@ -50,11 +50,11 @@ Will deliver a payload with the following properties:
 
 ```json
 {
+    "event": "push",
     "repository": "owner/project",
+    "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
     "ref": "refs/heads/master",
     "head": "",
-    "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
-    "event": "push",
     "workflow": "Build and deploy"
 }
 ```
@@ -76,11 +76,11 @@ and now look like:
 
 ```json
 {
+    "event": "push",
     "repository": "owner/project",
+    "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
     "ref": "refs/heads/master",
     "head": "",
-    "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
-    "event": "push",
     "workflow": "Build and deploy",
     "data": {
         "weapon": "hammer",
@@ -89,6 +89,23 @@ and now look like:
 }
 ```
 
+Send a form-urlencoded payload instead:
+
+```yml
+    - name: Invoke deployment hook
+      uses: distributhor/workflow-webhook@v1
+      env:
+        webhook_type: 'form-urlencoded'
+        webhook_url: ${{ secrets.WEBHOOK_URL }}
+        webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+        data: 'weapon=hammer&drink=beer'
+```
+
+Will set the `Content-Type` header to `application/x-www-form-urlencoded` and deliver:
+
+```csv
+"even=push&repository=owner/project&commit=a636b6f0861bbee98039bf3df66ee13d8fbc9c74&ref=refs/heads/master&head=&weapon=hammer&drink=beer"
+```
 
 ## Arguments
 
@@ -113,6 +130,13 @@ an HTTP POST request. <br/><br/>
 Credentials to be used for BASIC authentication against the endpoint. If not configured,
 authentication is assumed not to be required. If configured, it must follow the format
 `username:password`, which will be used as the BASIC auth credential.<br/><br/>
+
+```yml 
+  webhook_type: "json | form-urlencoded"
+```
+
+The default endpoint type is json. The argument is only required if you wish to send urlencoded form data. 
+Otherwise it's optional. <br/><br/>
 
 ```yml 
   data: "Additional json"
