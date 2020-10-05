@@ -139,11 +139,11 @@ The default endpoint type is json. The argument is only required if you wish to 
 Otherwise it's optional. <br/><br/>
 
 ```yml 
-  data: "Additional json"
+  data: "Additional json or url encoded data"
 ```
 
-Additional data to include in the payload. The argument is optional if the default 
-fields are sufficient and you wish to provide no further information.
+Additional data to include in the payload. It is optional. This data will attempted to be 
+merged 'as-is' with the existing payload, and is expected to already be sanitized and valid.
 
 The custom data will be available on a property named `data`, and it will be run through 
 a json validator. Invalid json will cause the action to break and exit. For example, using 
