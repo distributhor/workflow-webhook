@@ -78,6 +78,11 @@ curl -k -v --fail \
     -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
 
+# Curl error options ...
+# --silent hides the progress and error
+# --show-error shows the error message hidden by --silent
+# --fail returns an exit code > 0 when the request fails
+
 # wget -q --server-response --timeout=2000 -O - \
 #    --header="Content-Type: application/json" \
 #    --header="User-Agent: User-Agent: GitHub-Hookshot/760256b" \
