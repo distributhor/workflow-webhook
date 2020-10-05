@@ -145,8 +145,8 @@ Otherwise it's optional. <br/><br/>
 Additional data to include in the payload. It is optional. This data will attempted to be 
 merged 'as-is' with the existing payload, and is expected to already be sanitized and valid.
 
-The custom data will be available on a property named `data`, and it will be run through 
-a json validator. Invalid json will cause the action to break and exit. For example, using 
+In the case of JSON, the custom data will be available on a property named `data`, and it will be 
+run through a json validator. Invalid json will cause the action to break and exit. For example, using 
 single quotes for json properties and values instead of double quotes, will show the 
 following (somewhat confusing) message in your workflow output: `Invalid numeric literal`. 
 Such messages are the direct output from the validation library <https://stedolan.github.io/jq/>. 
