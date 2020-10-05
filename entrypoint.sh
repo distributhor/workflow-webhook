@@ -70,7 +70,7 @@ fi
 
 echo "Content Type: $CONTENT_TYPE"
 
-curl -k -f -v \
+curl -k -v --fail \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
