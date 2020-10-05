@@ -31,15 +31,15 @@ fi
 
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
     
-    event=`urlencode "event=$GITHUB_EVENT_NAME"`
-    repository=`urlencode "repository=$GITHUB_REPOSITORY"`
-    commit=`urlencode "commit=$GITHUB_SHA"`
-    ref=`urlencode "ref=$GITHUB_REF"`
-    head=`urlencode "head=$GITHUB_HEAD_REF"`
-    workflow=`urlencode "workflow=$GITHUB_WORKFLOW"`
+    event=`urlencode "$GITHUB_EVENT_NAME"`
+    repository=`urlencode "$GITHUB_REPOSITORY"`
+    commit=`urlencode "$GITHUB_SHA"`
+    ref=`urlencode "$GITHUB_REF"`
+    head=`urlencode "$GITHUB_HEAD_REF"`
+    workflow=`urlencode "$GITHUB_WORKFLOW"`
 
     CONTENT_TYPE="application/x-www-form-urlencoded"
-    FORM_DATA="$event&$repository&$commit&$ref&$head&$workflow"
+    FORM_DATA="event=$event&repository=$repository&commit=$commit&ref=$ref&head=$head&workflow=$workflow"
     
     if [ -n "$data" ]; then
         WEBHOOK_DATA="$FORM_DATA&$data"
