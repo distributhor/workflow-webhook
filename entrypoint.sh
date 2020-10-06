@@ -65,7 +65,9 @@ echo "4"
     if [ -n "$data" ]; then
     echo "8"
         CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
+        echo "$CUSTOM_JSON_DATA"
         JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED=`echo "$WEBHOOK_DATA" | sed 's/^{\(.*\)}$/\1/'`
+        echo "$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED"
         WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"data\":$CUSTOM_JSON_DATA}"
     fi
 
