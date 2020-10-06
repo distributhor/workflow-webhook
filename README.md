@@ -76,7 +76,7 @@ Add additional data to the payload:
         data: '{ "weapon": "hammer", "drink" : "beer" }'
 ```
 
-The additional information will become available on a 'data' property,
+The additional information will become available on a `data` property,
 and now look like:
 
 ```json
