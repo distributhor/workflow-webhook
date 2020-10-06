@@ -17,7 +17,7 @@ urldecode() {
     printf '%b' "${url_encoded//%/\\x}"
 }
 
-set -e
+set -ex
 
 if [ -z "$webhook_url" ]; then
     echo "No webhook_url configured"
@@ -68,6 +68,7 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
+echo "$GITHUB_EVENT_PATH"
 echo "Content Type: $CONTENT_TYPE"
 
 curl -k -v --fail \
@@ -78,16 +79,11 @@ curl -k -v --fail \
     -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
 
-# Curl error options ...
-# --silent hides the progress and error
-# --show-error shows the error message hidden by --silent
-# --fail returns an exit code > 0 when the request fails
-
-# wget -q --server-response --timeout=2000 -O - \
-#    --header="Content-Type: application/json" \
-#    --header="User-Agent: User-Agent: GitHub-Hookshot/760256b" \
-#    --header="X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-#    --header="X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
-#    --header="X-GitHub-Event: $GITHUB_EVENT_NAME" \
-#    --post-data "$WEBHOOK_DATA" $webhook_url
-#    # --http-user user --http-password
+#curl -X POST -H "content-type: $CONTENT_TYPE" \
+#    -H "User-Agent: User-Agent: GitHub-Hookshot/610258e" \
+#    -H "Expect: " \
+#    -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+#    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+#    -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
+#    -D - \
+#    $webhook_url --data-urlencode @"$GITHUB_EVENT_PATH"
