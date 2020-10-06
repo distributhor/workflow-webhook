@@ -29,6 +29,7 @@ if [ -z "$webhook_secret" ]; then
     exit 1
 fi
 echo "1"
+echo "$webhook_type"
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
     echo "2"
     EVENT=`urlencode "$GITHUB_EVENT_NAME"`
@@ -50,16 +51,19 @@ echo "3"
     #fi
 
 else
-
+echo "4"
     CONTENT_TYPE="application/json"
 
     if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
+    echo "5"
         WEBHOOK_DATA=`cat $GITHUB_EVENT_PATH`
     else
+    echo "6"
         WEBHOOK_DATA="{\"event\":\"$GITHUB_EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\"}"
     fi
-    
+    echo "7"
     if [ -n "$data" ]; then
+    echo "8"
         CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
         JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED=`echo "$WEBHOOK_DATA" | sed 's/^{\(.*\)}$/\1/'`
         WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"data\":$CUSTOM_JSON_DATA}"
