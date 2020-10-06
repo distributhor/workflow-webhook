@@ -47,8 +47,6 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
         WEBHOOK_DATA="$FORM_DATA"
     fi
 
-elif [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
-
 else
 
     CONTENT_TYPE="application/json"
@@ -63,7 +61,6 @@ else
 
 fi
 
-WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
 WEBHOOK_ENDPOINT=$webhook_url
 
 if [ -n "$webhook_auth" ]; then
@@ -74,6 +71,7 @@ echo "Content Type: $CONTENT_TYPE"
 
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
     echo "HERE1"
+    WEBHOOK_SIGNATURE=$(cat "$GITHUB_EVENT_PATH" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
     curl -k -v --fail \
         -H "Content-Type: $CONTENT_TYPE" \
         -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
@@ -83,6 +81,7 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
         $WEBHOOK_ENDPOINT --data-urlencode @"$GITHUB_EVENT_PATH"
 else
     echo "HERE2"
+    WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
     curl -k -v --fail \
         -H "Content-Type: $CONTENT_TYPE" \
         -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
