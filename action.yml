@@ -1,17 +1,17 @@
 name: 'Workflow Webhook Action'
-description: 'A Github workflow action to call a remote webhook'
+description: 'A Github workflow action to call a remote webhook with GitHub event payload or variables. Support for JSON or URL encoded webhook endpoints.'
 inputs:
   webhook_url:
     description: 'The HTTP URI of the webhook endpoint to invoke'
     required: true
   webhook_secret:
-    description: 'The secret with which to generate the signature hash'
+    description: 'The secret with which a signature hash is generated'
     required: true
   webhook_auth:
-    description: 'Credentials to be used for BASIC authentication'
+    description: 'Credentials to be used for BASIC authentication (optional)'
+  webhook_type: 'json | form-urlencoded | json-extended'
   data:
-    description: 'Who to greet'
-    default: 'json'
+    description: 'Optional additional data to include in the payload'
     
 runs:
   using: 'docker'
