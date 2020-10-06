@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 urlencode() {
     local length="${#1}"
     for (( i = 0; i < length; i++ )); do
@@ -16,8 +18,6 @@ urldecode() {
     local url_encoded="${1//+/ }"
     printf '%b' "${url_encoded//%/\\x}"
 }
-
-set -ex
 
 if [ -z "$webhook_url" ]; then
     echo "No webhook_url configured"
@@ -68,7 +68,7 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-echo "$GITHUB_EVENT_PATH"
+cat $GITHUB_EVENT_PATH
 echo "Content Type: $CONTENT_TYPE"
 
 curl -k -v --fail \
