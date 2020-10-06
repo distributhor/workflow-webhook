@@ -71,9 +71,6 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-echo "Content Type: $CONTENT_TYPE"
-echo "$WEBHOOK_DATA"
-
 curl -k -v --fail \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
