@@ -30,11 +30,11 @@ These values map to the payload as follows:
 ```
 
 If you are interested in receiving more data about the GitHub event than the above fields, then it can be 
-configured to send the raw data about the GitHub event, as per their default payload. More information about
-the payload that is sent, per the official documentation: <https://developer.github.com/webhooks/event-payloads/>, 
-and the details on how to configure it, further below.
+configured to send the whole JSON payload for of GitHub event. More information about the payload that is 
+sent, as per the official documentation: <https://developer.github.com/webhooks/event-payloads/>. Details 
+on how to configure it can be found further below.
 
-Additional (custom) data can be added to the payload as well (see further down).
+Additional (custom) data can also be added/merged to the payload (see further down).
 
 
 ## Usage
@@ -112,9 +112,9 @@ Will set the `Content-Type` header to `application/x-www-form-urlencoded` and de
 "event=push&repository=owner/project&commit=a636b6f0....&weapon=hammer&drink=beer"
 ```
 
-Lastly, if you prefer to receive the whole original GitHub payload as JSON (as opposed 
-to the default JSON snippet above), the configure the webhook as with a webhook_type of
-"json-extended":
+Finally, if you prefer to receive the whole original GitHub payload as JSON (as opposed 
+to the default JSON snippet above), then configure the webhook with a `webhook_type` of
+`json-extended`:
 
 ```yml
     - name: Invoke deployment hook
@@ -126,8 +126,8 @@ to the default JSON snippet above), the configure the webhook as with a webhook_
         data: '{ "weapon": "hammer", "drink" : "beer" }'
 ```
 
-You can still add custom JSON data, which will be available on a "data" property that will 
-be included with the GitHub payload. Importantly, the sending of the whole GitHub payload
+You can still add custom JSON data, which will be available on a `data` property, included 
+on the GitHub payload. Importantly, the sending of the whole GitHub payload
 is only supported as JSON, and not currently available as urlencoded form parameters.
 
 ## Arguments
