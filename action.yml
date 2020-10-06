@@ -1,5 +1,5 @@
 name: 'Workflow Webhook Action'
-description: 'A Github workflow action to call a remote webhook with GitHub event payload or variables. Support for JSON or URL encoded webhook endpoints.'
+description: 'A Github workflow action to call a remote webhook with a payload containing data from the originating GitHub event. Support for JSON or URL encoded webhook endpoints.'
 inputs:
   webhook_url:
     description: 'The HTTP URI of the webhook endpoint to invoke'
