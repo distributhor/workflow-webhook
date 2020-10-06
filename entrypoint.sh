@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 urlencode() {
     local length="${#1}"
     for (( i = 0; i < length; i++ )); do
@@ -19,6 +17,8 @@ urldecode() {
     printf '%b' "${url_encoded//%/\\x}"
 }
 
+set -e
+
 if [ -z "$webhook_url" ]; then
     echo "No webhook_url configured"
     exit 1
@@ -28,24 +28,26 @@ if [ -z "$webhook_secret" ]; then
     echo "No webhook_secret configured"
     exit 1
 fi
-
+echo "1"
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
-    
+    echo "2"
     EVENT=`urlencode "$GITHUB_EVENT_NAME"`
     REPOSITORY=`urlencode "$GITHUB_REPOSITORY"`
     COMMIT=`urlencode "$GITHUB_SHA"`
     REF=`urlencode "$GITHUB_REF"`
     HEAD=`urlencode "$GITHUB_HEAD_REF"`
     WORKFLOW=`urlencode "$GITHUB_WORKFLOW"`
-
+echo "3"
     CONTENT_TYPE="application/x-www-form-urlencoded"
     WEBHOOK_DATA="event=$EVENT&repository=$REPOSITORY&commit=$COMMIT&ref=$REF&head=$HEAD&workflow=$WORKFLOW"
-    
-    if [ -n "$data" ]; then
-        echo $data
-        echo $WEBHOOK_DATA
-        WEBHOOK_DATA="${WEBHOOK_DATA}&${data}" # custom_parameter=custom_value
-    fi
+    echo "4"
+    echo "$data"
+
+    #if [ -n "$data" ]; then
+    #    echo $data
+    #    echo $WEBHOOK_DATA
+    #    WEBHOOK_DATA="${WEBHOOK_DATA}&${data}" # custom_parameter=custom_value
+    #fi
 
 else
 
