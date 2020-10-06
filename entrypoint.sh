@@ -47,6 +47,8 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
         WEBHOOK_DATA="$FORM_DATA"
     fi
 
+elif [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
+
 else
 
     CONTENT_TYPE="application/json"
@@ -68,16 +70,27 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-cat $GITHUB_EVENT_PATH
 echo "Content Type: $CONTENT_TYPE"
 
-curl -k -v --fail \
-    -H "Content-Type: $CONTENT_TYPE" \
-    -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
-    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-    -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
-    -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
-    --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
+if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
+    echo "HERE1"
+    curl -k -v --fail \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+        -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
+        $WEBHOOK_ENDPOINT --data-urlencode @"$GITHUB_EVENT_PATH"
+else
+    echo "HERE2"
+    curl -k -v --fail \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+        -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
+fi
 
 #curl -X POST -H "content-type: $CONTENT_TYPE" \
 #    -H "User-Agent: User-Agent: GitHub-Hookshot/610258e" \
