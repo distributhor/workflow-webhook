@@ -78,7 +78,7 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
         -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
         -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
-        $WEBHOOK_ENDPOINT --data-urlencode @"$GITHUB_EVENT_PATH"
+        --data @"$GITHUB_EVENT_PATH" $WEBHOOK_ENDPOINT 
 else
     echo "HERE2"
     WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
