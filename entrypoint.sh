@@ -71,6 +71,7 @@ echo "Content Type: $CONTENT_TYPE"
 
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
     echo "HERE1"
+    cat $GITHUB_EVENT_PATH
     WEBHOOK_DATA=`cat $GITHUB_EVENT_PATH`
     # WEBHOOK_SIGNATURE=$(cat "$GITHUB_EVENT_PATH" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
     WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
@@ -81,7 +82,7 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
         -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
         -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
         --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
-        
+
         # --data @"$GITHUB_EVENT_PATH" $WEBHOOK_ENDPOINT 
 else
     echo "HERE2"
