@@ -42,7 +42,7 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
     WEBHOOK_DATA="event=$event&repository=$repository&commit=$commit&ref=$ref&head=$head&workflow=$workflow"
     
     if [ -n "$data" ]; then
-        WEBHOOK_DATA="$WEBHOOK_DATA&$data"
+        WEBHOOK_DATA="$WEBHOOK_DATA&$data" # custom_parameter=custom_value
     fi
 
 else
@@ -71,6 +71,7 @@ if [ -n "$webhook_auth" ]; then
 fi
 
 echo "Content Type: $CONTENT_TYPE"
+echo "$WEBHOOK_DATA"
 
 curl -k -v --fail \
     -H "Content-Type: $CONTENT_TYPE" \
