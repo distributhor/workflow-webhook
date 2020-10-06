@@ -30,33 +30,36 @@ if [ -z "$webhook_secret" ]; then
 fi
 
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
-    
-    event=`urlencode "$GITHUB_EVENT_NAME"`
-    repository=`urlencode "$GITHUB_REPOSITORY"`
-    commit=`urlencode "$GITHUB_SHA"`
-    ref=`urlencode "$GITHUB_REF"`
-    head=`urlencode "$GITHUB_HEAD_REF"`
-    workflow=`urlencode "$GITHUB_WORKFLOW"`
+
+    EVENT=`urlencode "$GITHUB_EVENT_NAME"`
+    REPOSITORY=`urlencode "$GITHUB_REPOSITORY"`
+    COMMIT=`urlencode "$GITHUB_SHA"`
+    REF=`urlencode "$GITHUB_REF"`
+    HEAD=`urlencode "$GITHUB_HEAD_REF"`
+    WORKFLOW=`urlencode "$GITHUB_WORKFLOW"`
 
     CONTENT_TYPE="application/x-www-form-urlencoded"
-    FORM_DATA="event=$event&repository=$repository&commit=$commit&ref=$ref&head=$head&workflow=$workflow"
-    
+    WEBHOOK_DATA="event=$EVENT&repository=$REPOSITORY&commit=$COMMIT&ref=$REF&head=$HEAD&workflow=$WORKFLOW"
+
     if [ -n "$data" ]; then
-        WEBHOOK_DATA="$FORM_DATA&$data"
-    else
-        WEBHOOK_DATA="$FORM_DATA"
+        WEBHOOK_DATA="${WEBHOOK_DATA}&${data}"
     fi
 
 else
 
     CONTENT_TYPE="application/json"
-    JSON_DATA="\"event\":\"$GITHUB_EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\""
+
+    if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
+        RAW_FILE_DATA=`cat $GITHUB_EVENT_PATH`
+        WEBHOOK_DATA=$(echo -n "$RAW_FILE_DATA" | jq -c '')
+    else
+        WEBHOOK_DATA="{\"event\":\"$GITHUB_EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\"}"
+    fi
     
     if [ -n "$data" ]; then
-        COMPACT_JSON=$(echo -n "$data" | jq -c '')
-        WEBHOOK_DATA="{$JSON_DATA,\"data\":$COMPACT_JSON}"
-    else
-        WEBHOOK_DATA="{$JSON_DATA}"
+        CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
+        JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED=`echo "$WEBHOOK_DATA" | sed 's/^{\(.*\)}$/\1/'`
+        WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"data\":$CUSTOM_JSON_DATA}"
     fi
 
 fi
@@ -68,8 +71,6 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-echo "Content Type: $CONTENT_TYPE"
-
 curl -k -v --fail \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
@@ -77,17 +78,3 @@ curl -k -v --fail \
     -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
     -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
-
-# Curl error options ...
-# --silent hides the progress and error
-# --show-error shows the error message hidden by --silent
-# --fail returns an exit code > 0 when the request fails
-
-# wget -q --server-response --timeout=2000 -O - \
-#    --header="Content-Type: application/json" \
-#    --header="User-Agent: User-Agent: GitHub-Hookshot/760256b" \
-#    --header="X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-#    --header="X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
-#    --header="X-GitHub-Event: $GITHUB_EVENT_NAME" \
-#    --post-data "$WEBHOOK_DATA" $webhook_url
-#    # --http-user user --http-password
