@@ -3,7 +3,7 @@
 [![GitHub Release][ico-release]][link-github-release]
 [![License][ico-license]](LICENSE)
 
-A Github workflow action to call (POST) a remote webhook endpoint with a json or form-urlencoded
+A Github workflow action to call a remote webhook endpoint with a JSON or form-urlencoded
 payload, and support for BASIC authentication. A hash signature is passed with each request, 
 derived from the payload and a configurable secret token. The hash signature is 
 identical to that which a regular Github webhook would generate, and sent in a header 
@@ -158,22 +158,22 @@ authentication is assumed not to be required. If configured, it must follow the 
   webhook_type: "json | form-urlencoded | json-extended"
 ```
 
-The default endpoint type is json. The argument is only required if you wish to send urlencoded form data. 
+The default endpoint type is JSON. The argument is only required if you wish to send urlencoded form data. 
 Otherwise it's optional. <br/><br/>
 
 ```yml 
-  data: "Additional json or url encoded data"
+  data: "Additional JSON or URL encoded data"
 ```
 
 Additional data to include in the payload. It is optional. This data will attempted to be 
 merged 'as-is' with the existing payload, and is expected to already be sanitized and valid.
 
 In the case of JSON, the custom data will be available on a property named `data`, and it will be 
-run through a json validator. Invalid json will cause the action to break and exit. For example, using 
-single quotes for json properties and values instead of double quotes, will show the 
+run through a JSON validator. Invalid JSON will cause the action to break and exit. For example, using 
+single quotes for JSON properties and values instead of double quotes, will show the 
 following (somewhat confusing) message in your workflow output: `Invalid numeric literal`. 
 Such messages are the direct output from the validation library <https://stedolan.github.io/jq/>. 
-The supplied json must pass the validation run through `jq`.
+The supplied JSON must pass the validation run through `jq`.
 
 
 ## License
