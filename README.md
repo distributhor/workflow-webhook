@@ -34,7 +34,7 @@ above fields, then the action can be configured to send the whole JSON payload o
 as per the `GITHUB_EVENT_PATH` variable in the environment variable documentation referenced above. 
 The official documentation and reference for the payload itself can be found here: 
 <https://developer.github.com/webhooks/event-payloads/>, and the details on how to configure it, 
-is further down this README.
+is further down in the **Usage** section of this README.
 
 Additional (custom) data can also be added/merged to the payload (see further down).
 
