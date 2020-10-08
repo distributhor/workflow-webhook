@@ -29,10 +29,12 @@ These values map to the payload as follows:
 }
 ```
 
-If you are interested in receiving more data about the GitHub event than the above fields, then it can be 
-configured to send the whole JSON payload for of GitHub event. More information about the payload that is 
-sent, as per the official documentation: <https://developer.github.com/webhooks/event-payloads/>. Details 
-on how to configure it can be found further below.
+If you are interested in receiving more comprehensive data about the GitHub event than just the 
+above fields, then the action can be configured to send the whole JSON payload of the GitHub event, 
+as per the `GITHUB_EVENT_PATH` variable in the environment variable documentation referenced above. 
+The official documentation and reference for the payload itself can be found here: 
+<https://developer.github.com/webhooks/event-payloads/>, and the details on how to configure it, 
+is further down this README.
 
 Additional (custom) data can also be added/merged to the payload (see further down).
 
