@@ -12,7 +12,9 @@ inputs:
   data:
     description: 'Who to greet'
     default: 'json'
-    
+outputs:
+  result:
+    description: 'The output from the webhook'
 runs:
   using: 'docker'
   image: 'Dockerfile'
