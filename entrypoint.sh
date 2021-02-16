@@ -30,7 +30,7 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-result=$(curl -q --max-time 1500 --fail -o - --no-buffer -X POST \
+result=$(curl -q --max-time 1500 -o - --no-buffer -X POST \
     -H "content-type: application/json" \
     -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
