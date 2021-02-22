@@ -7,6 +7,12 @@ inputs:
   webhook_secret:
     description: 'The secret with which to generate the signature hash'
     required: true
+  head_ref:
+    required: false
+  commit_sha:
+    required: false
+  event_name:
+    required: false
   webhook_auth:
     description: 'Credentials to be used for BASIC authentication'
   data:
