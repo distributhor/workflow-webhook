@@ -13,6 +13,7 @@ if [ -z "$webhook_secret" ]; then
 fi
 
 HEAD_REF="${head_ref:-$GITHUB_HEAD_REF}"
+HEAD_REF=$(echo "${HEAD_REF}" | sed 's/refs\/heads\///' )
 COMMIT_SHA="${commit_sha:-$GITHUB_SHA}"
 EVENT_NAME="${event_name:-$GITHUB_EVENT_NAME}"
 
