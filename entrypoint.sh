@@ -72,7 +72,7 @@ if [ -n "$webhook_auth" ]; then
 fi
 
 
-if [ "$silent"]; then
+if [ "$silent" ]; then
     curl -k -v --fail -s \
         -H "Content-Type: $CONTENT_TYPE" \
         -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
