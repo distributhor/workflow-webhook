@@ -1,4 +1,4 @@
-name: 'Workflow Webhook Action'
+name: 'Workflow Private Webhook Action'
 description: 'A Github workflow action to call a webhook with payload data from the event. Support for JSON or URL encoded endpoints.'
 inputs:
   webhook_url:
