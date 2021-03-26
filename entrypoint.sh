@@ -79,7 +79,7 @@ if [ "$silent" ]; then
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
         -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
         -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
-        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT &> /dev/null
 else
     curl -k -v --fail \
         -H "Content-Type: $CONTENT_TYPE" \
