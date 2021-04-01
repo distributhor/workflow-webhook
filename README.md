@@ -163,9 +163,18 @@ authentication is assumed not to be required. If configured, it must follow the 
 The default endpoint type is JSON. The argument is only required if you wish to send urlencoded form data. 
 Otherwise it's optional. <br/><br/>
 
+
+```yml 
+  silent: true
+```
+
+To hide the output from curl set the argument `silent` to `true`. The default value is `false`.<br/><br/>
+
+
 ```yml 
   data: "Additional JSON or URL encoded data"
 ```
+
 
 Additional data to include in the payload. It is optional. This data will attempted to be 
 merged 'as-is' with the existing payload, and is expected to already be sanitized and valid.

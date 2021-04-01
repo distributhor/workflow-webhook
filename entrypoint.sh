@@ -71,10 +71,21 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-curl -k -v --fail \
-    -H "Content-Type: $CONTENT_TYPE" \
-    -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
-    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-    -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
-    -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
-    --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
+
+if [ "$silent" ]; then
+    curl -k -v --fail -s \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+        -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT &> /dev/null
+else
+    curl -k -v --fail \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
+        -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
+fi
