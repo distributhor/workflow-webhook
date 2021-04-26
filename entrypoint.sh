@@ -55,7 +55,6 @@ else
     else
         WEBHOOK_DATA="{\"event\":\"$GITHUB_EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\"}"
     fi
-    
     if [ -n "$data" ]; then
         CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
         JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED=`echo "$WEBHOOK_DATA" | sed 's/^{\(.*\)}$/\1/'`
@@ -65,6 +64,7 @@ else
 fi
 
 WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl sha1 -hmac "$webhook_secret" -binary | xxd -p)
+WEBHOOK_SIGNATURE_256=$(echo -n "$WEBHOOK_DATA" | openssl dgst -sha256 -hmac "$webhook_secret" -binary | xxd -p |tr -d '\n')
 WEBHOOK_ENDPOINT=$webhook_url
 
 if [ -n "$webhook_auth" ]; then
@@ -73,18 +73,20 @@ fi
 
 
 if [ "$silent" ]; then
-    curl -k -v --fail -s \
+    curl -k -v --http1.1 --fail -s \
         -H "Content-Type: $CONTENT_TYPE" \
         -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
         -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
         -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
         --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT &> /dev/null
 else
-    curl -k -v --fail \
+    curl -k -v --http1.1 --fail \
         -H "Content-Type: $CONTENT_TYPE" \
         -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
         -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
         -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
         --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
