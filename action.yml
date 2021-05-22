@@ -13,6 +13,9 @@ inputs:
     description: 'json | form-urlencoded | json-extended'
   silent:
     description: 'Optional, set to true to disable output and therefore IP leaking'
+  verify_ssl:
+    description: 'Optional, set to false to disable verification of SSL certificates'
+    default: true
   data:
     description: 'Optional additional data to include in the payload'
     

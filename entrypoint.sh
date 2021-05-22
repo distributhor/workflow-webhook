@@ -71,12 +71,16 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-options="--http1.1 --fail -k"
+options="--http1.1 --fail"
 
 if [ "$silent" ]; then
     options="$options -s"
 else
     options="$options -v"
+fi
+
+if [ "$verify_ssl" = false ]; then
+    options="$options -k"
 fi
 
 curl $options \

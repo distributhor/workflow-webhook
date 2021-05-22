@@ -170,6 +170,12 @@ Otherwise it's optional. <br/><br/>
 
 To hide the output from curl set the argument `silent` to `true`. The default value is `false`.<br/><br/>
 
+```yml 
+  verify_ssl: false
+```
+
+To disable verification of SSL-certificates in curl set the argument `verify_ssl` to `false`. The default value is `true`. See also: [`curl` docs on option `-k`](https://curl.se/docs/manpage.html#-k).<br/><br/>
+
 
 ```yml 
   data: "Additional JSON or URL encoded data"
