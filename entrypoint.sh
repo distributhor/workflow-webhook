@@ -75,7 +75,7 @@ fi
 if [ "$silent" ]; then
     curl -k -v --http1.1 --fail -s \
         -H "Content-Type: $CONTENT_TYPE" \
-        -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+        -H "User-Agent: GitHub-Hookshot/760256b" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
         -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
         -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
@@ -84,7 +84,7 @@ if [ "$silent" ]; then
 else
     curl -k -v --http1.1 --fail \
         -H "Content-Type: $CONTENT_TYPE" \
-        -H "User-Agent: User-Agent: GitHub-Hookshot/760256b" \
+        -H "User-Agent: GitHub-Hookshot/760256b" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
         -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
         -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
