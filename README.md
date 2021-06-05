@@ -62,9 +62,12 @@ Will deliver a payload with the following properties:
     "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
     "ref": "refs/heads/master",
     "head": "",
-    "workflow": "Build and deploy"
+    "workflow": "Build and deploy",
+    "requestID": "74b1912d19cfe780f1fada4b525777fd"
 }
 ```
+`requestID` contains a randomly generated identifier for each request. 
+
 <br/>
 
 Add additional data to the payload:
@@ -92,7 +95,8 @@ and now look like:
     "data": {
         "weapon": "hammer",
         "drink": "beer"
-    }
+    },
+    "requestID": "74b1912d19cfe780f1fada4b525777fd"
 }
 ```
 
