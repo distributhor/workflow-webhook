@@ -47,7 +47,7 @@ Send the JSON (default) payload to a webhook:
 
 ```yml
     - name: Invoke deployment hook
-      uses: distributhor/workflow-webhook@v1
+      uses: distributhor/workflow-webhook@v2
       env:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
@@ -74,7 +74,7 @@ Add additional data to the payload:
 
 ```yml
     - name: Invoke deployment hook
-      uses: distributhor/workflow-webhook@v1
+      uses: distributhor/workflow-webhook@v2
       env:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
