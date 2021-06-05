@@ -62,9 +62,12 @@ Will deliver a payload with the following properties:
     "commit": "a636b6f0861bbee98039bf3df66ee13d8fbc9c74",
     "ref": "refs/heads/master",
     "head": "",
-    "workflow": "Build and deploy"
+    "workflow": "Build and deploy",
+    "requestID": "74b1912d19cfe780f1fada4b525777fd"
 }
 ```
+`requestID` contains a randomly generated identifier for each request. 
+
 <br/>
 
 Add additional data to the payload:
@@ -92,7 +95,8 @@ and now look like:
     "data": {
         "weapon": "hammer",
         "drink": "beer"
-    }
+    },
+    "requestID": "74b1912d19cfe780f1fada4b525777fd"
 }
 ```
 
@@ -163,12 +167,26 @@ authentication is assumed not to be required. If configured, it must follow the 
 The default endpoint type is JSON. The argument is only required if you wish to send urlencoded form data. 
 Otherwise it's optional. <br/><br/>
 
+```yml
+  verbose: true
+```
+
+To enable verbose output in curl set the argument `verbose` to `true`. The default value is `false`. See also: [`curl` docs on option `-v`](https://curl.se/docs/manpage.html#-v).
+
+:warning: **Warning:** This might lead to domain and IP leaking, as well as other security issues as the logs are public. See also [#21](https://github.com/distributhor/workflow-webhook/issues/21) and [#22](https://github.com/distributhor/workflow-webhook/issues/22). :warning:<br/><br/>
+
 
 ```yml 
   silent: true
 ```
 
 To hide the output from curl set the argument `silent` to `true`. The default value is `false`.<br/><br/>
+
+```yml 
+  verify_ssl: false
+```
+
+To disable verification of SSL-certificates in curl set the argument `verify_ssl` to `false`. The default value is `true`. See also: [`curl` docs on option `-k`](https://curl.se/docs/manpage.html#-k).<br/><br/>
 
 
 ```yml 
