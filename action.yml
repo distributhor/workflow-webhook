@@ -11,6 +11,8 @@ inputs:
     description: 'Credentials to be used for BASIC authentication (optional)'
   webhook_type: 
     description: 'json | form-urlencoded | json-extended'
+  verbose:
+    description: 'Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.'
   silent:
     description: 'Optional, set to true to disable output and therefore IP leaking'
   verify_ssl:

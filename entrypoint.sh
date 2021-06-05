@@ -73,10 +73,10 @@ fi
 
 options="--http1.1 --fail"
 
-if [ "$silent" ]; then
-    options="$options -s"
-else
+if [ "$verbose" = true ]; then
     options="$options -v"
+elif [ "$silent" = true ]; then
+    options="$options -s"
 fi
 
 if [ "$verify_ssl" = false ]; then

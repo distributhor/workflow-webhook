@@ -163,6 +163,14 @@ authentication is assumed not to be required. If configured, it must follow the 
 The default endpoint type is JSON. The argument is only required if you wish to send urlencoded form data. 
 Otherwise it's optional. <br/><br/>
 
+```yml
+  verbose: true
+```
+
+To enable verbose output in curl set the argument `verbose` to `true`. The default value is `false`. See also: [`curl` docs on option `-v`](https://curl.se/docs/manpage.html#-v).
+
+:warning: **Warning:** This might lead to domain and IP leaking, as well as other security issues as the logs are public. See also [#21](https://github.com/distributhor/workflow-webhook/issues/21) and [#22](https://github.com/distributhor/workflow-webhook/issues/22). :warning:<br/><br/>
+
 
 ```yml 
   silent: true
