@@ -21,9 +21,19 @@ inputs:
   data:
     description: 'Optional additional data to include in the payload'
     
+# runs:
+#   using: 'docker'
+#   image: 'Dockerfile'
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - name: Make `entrypoint.sh` executable
+      run: sudo chmod +x ${{ github.action_path }}/entrypoint.sh
+      shell: bash
+    - name: Call webhook
+      run: ${{ github.action_path }}/entrypoint.sh
+      shell: bash
 
 branding:
   icon: 'terminal'
