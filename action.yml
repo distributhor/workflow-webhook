@@ -18,7 +18,7 @@ inputs:
     
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://distributhor/workflow-webhook-container:v1.1.0'
 
 branding:
   icon: 'terminal'
