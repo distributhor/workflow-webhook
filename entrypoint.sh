@@ -29,7 +29,7 @@ if [ -z "$webhook_secret" ]; then
     exit 1
 fi
 
-REQUEST_ID=$(cat /dev/urandom | tr -dc '0-9a-f' | fold -w 32 | head -n 1)
+REQUEST_ID=$(uuidgen)
 
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
 
