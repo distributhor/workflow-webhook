@@ -41,6 +41,10 @@ fi
 # 
 REQUEST_ID=$(uuidgen)
 
+if [ "$silent" != true ]; then
+    echo "Webhook Request ID: $REQUEST_ID"
+fi
+
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
 
     EVENT=`urlencode "$GITHUB_EVENT_NAME"`
