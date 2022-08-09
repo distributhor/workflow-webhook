@@ -106,6 +106,10 @@ if [ -n "$timeout" ]; then
     options="$options --connect-timeout $timeout"
 fi
 
+if [ "$verbose" = true ]; then
+    echo "Options: $options"
+fi
+
 curl $options \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: GitHub-Hookshot/760256b" \
