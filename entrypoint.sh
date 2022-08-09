@@ -102,6 +102,10 @@ if [ "$verify_ssl" = false ]; then
     options="$options -k"
 fi
 
+if [ -n "$timeout" ]; then
+    options="$options --connect-timeout $timeout"
+fi
+
 curl $options \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: GitHub-Hookshot/760256b" \

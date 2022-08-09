@@ -15,6 +15,8 @@ inputs:
     description: 'Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.'
   silent:
     description: 'Optional, set to true to disable output and therefore IP leaking'
+  timeout:
+    description: 'Optional, set a maximum time, in seconds, by which to establish a connection to the server'
   verify_ssl:
     description: 'Optional, set to false to disable verification of SSL certificates'
     default: true
