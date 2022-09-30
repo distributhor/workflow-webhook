@@ -110,11 +110,17 @@ if [ "$verbose" = true ]; then
     echo "Options: $options"
 fi
 
+if [ -n "$event_name" ]; then
+    EVENT_NAME=$event_name
+else
+    EVENT_NAME=$GITHUB_EVENT_NAME
+fi
+
 curl $options \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
     -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
-    -H "X-GitHub-Delivery: $GITHUB_RUN_NUMBER" \
-    -H "X-GitHub-Event: $GITHUB_EVENT_NAME" \
+    -H "X-GitHub-Delivery: $REQUEST_ID" \
+    -H "X-GitHub-Event: $EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT

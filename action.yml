@@ -21,7 +21,9 @@ inputs:
     description: 'Optional, set to false to disable verification of SSL certificates'
     default: true
   data:
-    description: 'Optional additional data to include in the payload'
+    description: 'Optional, additional data to include in the payload'
+  event_name:
+    description: 'Optional, The name of the event sent to the webhook endpoint, if no custom name is defined it will default to GITHUB_EVENT_NAME'
     
 runs:
   using: 'docker'
