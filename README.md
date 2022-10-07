@@ -197,6 +197,12 @@ To disable verification of SSL-certificates in curl set the argument `verify_ssl
 
 
 ```yml 
+  event_name: 'NAME'
+```
+
+Optional. A custom event name sent to the webhook endpoint<br/><br/>
+
+```yml 
   data: "Additional JSON or URL encoded data"
 ```
 

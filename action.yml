@@ -20,15 +20,15 @@ inputs:
   verify_ssl:
     description: 'Optional, set to false to disable verification of SSL certificates'
     default: true
+  event_name:
+    description: 'Optional, a custom event name sent to the webhook endpoint, if not defined it defaults to GITHUB_EVENT_NAME'
   data:
     description: 'Optional, additional data to include in the payload'
-  event_name:
-    description: 'Optional, The name of the event sent to the webhook endpoint, if no custom name is defined it will default to GITHUB_EVENT_NAME'
     
 runs:
   using: 'docker'
   # image: 'Dockerfile'
-  image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v2.0.4'
+  image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.0'
 
 branding:
   icon: 'terminal'
