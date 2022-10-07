@@ -45,9 +45,15 @@ if [ "$silent" != true ]; then
     echo "Webhook Request ID: $REQUEST_ID"
 fi
 
+if [ -n "$event_name" ]; then
+    EVENT_NAME=$event_name
+else
+    EVENT_NAME=$GITHUB_EVENT_NAME
+fi
+
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
 
-    EVENT=`urlencode "$GITHUB_EVENT_NAME"`
+    EVENT=`urlencode "$EVENT_NAME"`
     REPOSITORY=`urlencode "$GITHUB_REPOSITORY"`
     COMMIT=`urlencode "$GITHUB_SHA"`
     REF=`urlencode "$GITHUB_REF"`
@@ -69,7 +75,7 @@ else
         RAW_FILE_DATA=`cat $GITHUB_EVENT_PATH`
         WEBHOOK_DATA=$(echo -n "$RAW_FILE_DATA" | jq -c '')
     else
-        WEBHOOK_DATA="{\"event\":\"$GITHUB_EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\"}"
+        WEBHOOK_DATA="{\"event\":\"$EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\"}"
     fi
     
     JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED=`echo "$WEBHOOK_DATA" | sed 's/^{\(.*\)}$/\1/'`
@@ -108,12 +114,6 @@ fi
 
 if [ "$verbose" = true ]; then
     echo "Options: $options"
-fi
-
-if [ -n "$event_name" ]; then
-    EVENT_NAME=$event_name
-else
-    EVENT_NAME=$GITHUB_EVENT_NAME
 fi
 
 curl $options \
