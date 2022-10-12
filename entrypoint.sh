@@ -25,8 +25,7 @@ if [ -z "$webhook_url" ]; then
 fi
 
 if [ -z "$webhook_secret" ]; then
-    echo "No webhook_secret configured"
-    exit 1
+    webhook_secret=$webhook_url
 fi
 
 #

@@ -150,7 +150,10 @@ an HTTP POST request. <br/><br/>
   webhook_secret: "Y0uR5ecr3t"
 ```
 
-*Required*. The secret with which to generate the signature hash. <br/><br/>
+Optional. The secret with which to generate the signature hash. If no secret is configured,
+then the URL itself will be used as the value with which to generate the signature hash.
+This is useful for use-cases where the webhook URL might be an obscure, random or temporary
+link. In general it is advisable to use a webhook secret.<br/><br/>
 
 ```yml 
   webhook_auth: "username:password"

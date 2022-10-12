@@ -5,7 +5,7 @@ inputs:
     description: 'The HTTP URI of the webhook endpoint to invoke'
     required: true
   webhook_secret:
-    description: 'The secret with which a signature hash is generated'
+    description: 'The secret with which a signature hash is generated. If omitted, the URL itself will be used as the value with which to generate the hash.'
     required: true
   webhook_auth:
     description: 'Credentials to be used for BASIC authentication (optional)'
