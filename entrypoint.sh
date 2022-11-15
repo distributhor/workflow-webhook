@@ -45,4 +45,4 @@ result=$(curl -q --max-time 1500 -o - --no-buffer -X POST \
 )
 
 echo "Result: $result"
-echo "::set-output name=result::$result"
+echo "result=$result" >> $GITHUB_OUTPUT
