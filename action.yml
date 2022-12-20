@@ -24,7 +24,11 @@ inputs:
     description: 'Optional, a custom event name sent to the webhook endpoint, if not defined it defaults to GITHUB_EVENT_NAME'
   data:
     description: 'Optional, additional data to include in the payload'
-    
+
+outputs:
+  response-body:
+    description: The response body of the webook request.
+
 runs:
   using: 'docker'
   # image: 'Dockerfile'

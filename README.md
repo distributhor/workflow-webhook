@@ -220,6 +220,13 @@ following (somewhat confusing) message in your workflow output: `Invalid numeric
 Such messages are the direct output from the validation library <https://stedolan.github.io/jq/>. 
 The supplied JSON must pass the validation run through `jq`.
 
+## Output
+
+```yml
+  response-body: 'json | string | raw response'
+```
+
+The body of the webook request response
 
 ## License
 
