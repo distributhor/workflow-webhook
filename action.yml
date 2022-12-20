@@ -31,8 +31,8 @@ outputs:
 
 runs:
   using: 'docker'
-  # image: 'Dockerfile'
-  image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.1'
+  image: 'Dockerfile'
+  # image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.1'
 
 branding:
   icon: 'terminal'
