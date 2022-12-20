@@ -115,13 +115,13 @@ if [ "$verbose" = true ]; then
     echo "Options: $options"
 fi
 
-response=curl $options \
+response=(curl $options \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
     -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
     -H "X-GitHub-Delivery: $REQUEST_ID" \
     -H "X-GitHub-Event: $EVENT_NAME" \
-    --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT
+    --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
 echo "response-body=$response" >> $GITHUB_OUTPUT
