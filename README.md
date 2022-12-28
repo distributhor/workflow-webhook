@@ -223,10 +223,10 @@ The supplied JSON must pass the validation run through `jq`.
 ## Output
 
 ```yml
-  response-body: 'json | string | raw response'
+  response-body: 'The body of the webook request response'
 ```
 
-The body of the webook request response
+
 
 ## License
 
