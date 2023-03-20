@@ -192,6 +192,13 @@ To hide the output from curl set the argument `silent` to `true`. The default va
 To set a maximum time, in seconds, by which to establish an initial connection to the server. Once a connection has been
 established, the option is not used in any further way with regards to the duration of connection.<br/><br/>
 
+```yml
+  max_time: 30
+```
+
+To set a maximum time, in seconds, by which the server needs to respond to the POST request.
+This also includes the time needed for the server to respond. May be used in combination with `timeout`.<br/><br/>
+
 ```yml 
   verify_ssl: false
 ```

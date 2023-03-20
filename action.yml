@@ -17,6 +17,8 @@ inputs:
     description: 'Optional, set to true to disable output and therefore IP leaking'
   timeout:
     description: 'Optional, set a maximum time, in seconds, by which to establish a connection to the server'
+  max_time:
+    description: 'Optional, set a maximum time, in seconds, the request to the server can take, before being cancelled'
   verify_ssl:
     description: 'Optional, set to false to disable verification of SSL certificates'
     default: true

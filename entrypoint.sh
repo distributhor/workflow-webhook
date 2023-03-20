@@ -111,6 +111,10 @@ if [ -n "$timeout" ]; then
     options="$options --connect-timeout $timeout"
 fi
 
+if [ -n "$max_time" ]; then
+    options="$options --max-time $max_time"
+fi
+
 if [ "$verbose" = true ]; then
     echo "Options: $options"
 fi
