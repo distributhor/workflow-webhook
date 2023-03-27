@@ -196,8 +196,14 @@ established, the option is not used in any further way with regards to the durat
   max_time: 30
 ```
 
-To set a maximum time, in seconds, by which the server needs to respond to the POST request.
+To set a maximum time, in seconds, by which the server needs to respond to the request.
 This also includes the time needed for the server to respond. May be used in combination with `timeout`.<br/><br/>
+
+```yml
+  curl_opts: -H "X-First-Name: Joe"
+```
+
+To pass in arbitrary options to the curl request. NOTE: the string configured here will be passed verbatim as curl options - use with care.<br/><br/>
 
 ```yml 
   verify_ssl: false

@@ -19,6 +19,8 @@ inputs:
     description: 'Optional, set a maximum time, in seconds, by which to establish a connection to the server'
   max_time:
     description: 'Optional, set a maximum time, in seconds, the request to the server can take, before being cancelled'
+  curl_opts:
+    description: 'Optional, to pass in arbitrary options to the curl request'
   verify_ssl:
     description: 'Optional, set to false to disable verification of SSL certificates'
     default: true
@@ -33,8 +35,8 @@ outputs:
 
 runs:
   using: 'docker'
-  # image: 'Dockerfile'
-  image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.2'
+  image: 'Dockerfile'
+  # image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.2'
 
 branding:
   icon: 'terminal'
