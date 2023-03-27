@@ -176,7 +176,8 @@ Otherwise it's optional. <br/><br/>
 
 To enable verbose output in curl set the argument `verbose` to `true`. The default value is `false`. See also: [`curl` docs on option `-v`](https://curl.se/docs/manpage.html#-v).
 
-:warning: **Warning:** This might lead to domain and IP leaking, as well as other security issues as the logs are public. See also [#21](https://github.com/distributhor/workflow-webhook/issues/21) and [#22](https://github.com/distributhor/workflow-webhook/issues/22). :warning:<br/><br/>
+:warning: **Warning:** This might lead to domain and IP leaking, as well as other security issues as the logs are public. 
+See also [#21](https://github.com/distributhor/workflow-webhook/issues/21) and [#22](https://github.com/distributhor/workflow-webhook/issues/22). :warning:<br/><br/>
 
 
 ```yml 
@@ -204,15 +205,17 @@ This also includes the time needed for the server to respond. May be used in com
   curl_opts: '-H "X-Beverage: Beer"'
 ```
 
-To pass in arbitrary options to the curl request. NOTE: this is an experimental feature and not guaranteed to work for all options. 
-The string configured here will be passed in verbatim as curl options, and it is quite easy to break things when using it. For 
-simple curl options it should work, but for others it may not suffice. Also, take care with escaping characters in YAML.<br/><br/>
+You can use `curl_opts` to pass in arbitrary options to the curl request. NOTE: this is an experimental feature and not 
+guaranteed to work for all options. The string configured here will be passed in verbatim to curl, and it is quite easy to 
+break things when using it. For simple curl options it should work, but for others it may not suffice. Also, take care with 
+escaping characters in YAML.<br/><br/>
 
 ```yml 
   verify_ssl: false
 ```
 
-To disable verification of SSL-certificates in curl set the argument `verify_ssl` to `false`. The default value is `true`. See also: [`curl` docs on option `-k`](https://curl.se/docs/manpage.html#-k).<br/><br/>
+To disable verification of SSL-certificates in curl set the argument `verify_ssl` to `false`. The default value is `true`. 
+See also: [`curl` docs on option `-k`](https://curl.se/docs/manpage.html#-k).<br/><br/>
 
 
 ```yml 
