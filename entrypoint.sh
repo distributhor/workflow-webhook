@@ -132,4 +132,10 @@ response=$(curl $options \
     -H "X-GitHub-Event: $EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
-echo "response-body=$response" >> $GITHUB_OUTPUT
+echo "CURL_RESPONSE<<$REQUEST_ID" >> $GITHUB_ENV
+echo "$response" >> $GITHUB_ENV
+echo "$REQUEST_ID" >> $GITHUB_ENV
+
+echo "response-body=$CURL_RESPONSE" >> $GITHUB_OUTPUT
+
+echo $CURL_RESPONSE
