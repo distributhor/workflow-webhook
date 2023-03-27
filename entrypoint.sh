@@ -116,7 +116,7 @@ if [ -n "$max_time" ]; then
 fi
 
 if [ -n "$curl_opts" ]; then
-    options="$options \ $curl_opts "
+    options="$options $curl_opts"
 fi
 
 if [ "$verbose" = true ]; then

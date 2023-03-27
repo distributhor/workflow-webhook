@@ -200,10 +200,13 @@ To set a maximum time, in seconds, by which the server needs to respond to the r
 This also includes the time needed for the server to respond. May be used in combination with `timeout`.<br/><br/>
 
 ```yml
+  curl_opts: '--speed-limit 5000'
   curl_opts: '-H "X-Beverage: Beer"'
 ```
 
-To pass in arbitrary options to the curl request. NOTE: the string configured here will be passed verbatim as curl options - use with care.<br/><br/>
+To pass in arbitrary options to the curl request. NOTE: this is an experimental feature and not guaranteed to work for all options. 
+The string configured here will be passed in verbatim as curl options, and it is quite easy to break things when using it. For 
+simple curl options it should work, but for others it may not suffice. Also, take care with escaping characters in YAML.<br/><br/>
 
 ```yml 
   verify_ssl: false
