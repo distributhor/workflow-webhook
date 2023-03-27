@@ -200,7 +200,7 @@ To set a maximum time, in seconds, by which the server needs to respond to the r
 This also includes the time needed for the server to respond. May be used in combination with `timeout`.<br/><br/>
 
 ```yml
-  curl_opts: -H "X-First-Name: Joe"
+  curl_opts: '-H "X-Beverage: Beer"'
 ```
 
 To pass in arbitrary options to the curl request. NOTE: the string configured here will be passed verbatim as curl options - use with care.<br/><br/>
