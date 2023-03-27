@@ -80,7 +80,7 @@ else
     JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED=`echo "$WEBHOOK_DATA" | sed 's/^{\(.*\)}$/\1/'`
     if [ -n "$data" ]; then
         CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
-        WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"data\":$CUSTOM_JSON_DATA,\"requestID\":\"$REQUEST_ID\"}"
+        WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"requestID\":\"$REQUEST_ID\",\"data\":$CUSTOM_JSON_DATA}"
     else
         WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"requestID\":\"$REQUEST_ID\"}"
     fi
@@ -138,9 +138,9 @@ response=$(curl $options \
 
 echo "response-body=$response" >> $GITHUB_OUTPUT
 
-echo "HELLO"
-echo $response
-echo "WORLD"
+# echo "HELLO"
+# echo $response
+# echo "WORLD"
 
 # echo "HELLO2"
 # echo $CURL_RESPONSE
