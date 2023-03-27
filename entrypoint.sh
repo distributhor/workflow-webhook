@@ -138,4 +138,10 @@ echo "$REQUEST_ID" >> $GITHUB_ENV
 
 echo "response-body=$CURL_RESPONSE" >> $GITHUB_OUTPUT
 
+echo "HELLO"
+echo $response
+echo "WORLD"
+
+echo "HELLO2"
 echo $CURL_RESPONSE
+echo "WORLD2"
