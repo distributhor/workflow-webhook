@@ -143,7 +143,7 @@ echo "$REQUEST_ID" >> $GITHUB_OUTPUT
 
 if [ "$verbose" = true ]; then
     echo "Curl response:"
-    echo $webhook_response
+    echo "${webhook_response}"
     echo "===="
     echo "${response-body}"
 fi
