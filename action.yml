@@ -31,7 +31,7 @@ inputs:
 
 outputs:
   response-body:
-    description: The response body of the webook request
+    description: The response body of the webook response
 
 runs:
   using: 'docker'
