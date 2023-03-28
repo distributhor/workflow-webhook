@@ -30,8 +30,10 @@ inputs:
     description: 'Optional, additional data to include in the payload'
 
 outputs:
-  response-body:
+  webhook_response:
     description: The response body of the webook request
+  response-body:
+    description: Deprecated, webhook_response is preferred. The response body of the webook request
 
 runs:
   using: 'docker'

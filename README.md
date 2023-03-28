@@ -242,10 +242,12 @@ The supplied JSON must pass the validation run through `jq`.
 ## Output
 
 ```yml
-  response-body: 'The body of the webook request response'
+  webhook_response: 'The body of the webook request response'
+  response-body: 'Deprecated. The body of the webook request response.'
 ```
 
-
+The use of `response-body` is deprecated, and `webhook_response` is preferred. Using `response-body` will
+still work for a long time, but at some point in the future may be removed.
 
 ## License
 

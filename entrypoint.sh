@@ -120,7 +120,7 @@ if [ -n "$curl_opts" ]; then
 fi
 
 if [ "$verbose" = true ]; then
-    echo "Options: $options"
+    echo "Curl options: $options"
 fi
 
 response=$(curl $options \
@@ -132,20 +132,18 @@ response=$(curl $options \
     -H "X-GitHub-Event: $EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
+# echo "webhook_response=$response" >> $GITHUB_OUTPUT
 echo "response-body<<$REQUEST_ID" >> $GITHUB_OUTPUT
 echo "$response" >> $GITHUB_OUTPUT
 echo "$REQUEST_ID" >> $GITHUB_OUTPUT
 
-# echo "response-body=$response" >> $GITHUB_OUTPUT
+echo "webhook_response<<$REQUEST_ID" >> $GITHUB_OUTPUT
+echo "$response" >> $GITHUB_OUTPUT
+echo "$REQUEST_ID" >> $GITHUB_OUTPUT
 
-echo "HELLO"
-echo $response
-echo "WORLD"
-
-echo "HELLO2"
-echo $GITHUB_OUTPUT
-echo "WORLD2"
-
-echo "HELLO3"
-echo ${response-body}
-echo "WORLD3"
+if [ "$verbose" = true ]; then
+    echo "Curl response:"
+    echo $webhook_response
+    echo "===="
+    echo "${response-body}"
+fi
