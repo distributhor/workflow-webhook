@@ -133,13 +133,13 @@ response=$(curl $options \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
 # echo "webhook_response=$response" >> $GITHUB_OUTPUT
-echo "response-body<<EOF" >> $GITHUB_OUTPUT
-echo "$response" >> $GITHUB_OUTPUT
-echo "EOF" >> $GITHUB_OUTPUT
-
 echo "webhook_response<<$REQUEST_ID" >> $GITHUB_OUTPUT
 echo "$response" >> $GITHUB_OUTPUT
 echo "$REQUEST_ID" >> $GITHUB_OUTPUT
+
+echo "response-body<<EOF" >> $GITHUB_OUTPUT
+echo "$response" >> $GITHUB_OUTPUT
+echo "EOF" >> $GITHUB_OUTPUT
 
 if [ "$verbose" = true ]; then
     echo "Curl response:"
