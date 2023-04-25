@@ -1,5 +1,18 @@
 #!/bin/bash
 
+webhook_auth=$INPUT_WEBHOOK_AUTH
+webhook_secret=$INPUT_WEBHOOK_SECRET
+webhook_type=$INPUT_WEBHOOK_TYPE
+webhook_url=$INPUT_WEBHOOK_URL
+silent=$INPUT_SILENT
+verbose=$INPUT_VERBOSE
+verify_ssl=$INPUT_VERIFY_SSL
+timeout=$INPUT_TIMEOUT
+max_time=$INPUT_MAX_TIME
+curl_opts=$INPUT_CURL_OPTS
+event_name=$INPUT_EVENT_NAME
+data=$INPUT_DATA
+
 urlencode() {
     local length="${#1}"
     for (( i = 0; i < length; i++ )); do
