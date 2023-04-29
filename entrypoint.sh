@@ -74,15 +74,14 @@ else
         RAW_FILE_DATA=`cat $GITHUB_EVENT_PATH`
         WEBHOOK_DATA=$(echo -n "$RAW_FILE_DATA" | jq -c '')
     else
-        WEBHOOK_DATA="{\"event\":\"$EVENT_NAME\",\"repository\":\"$GITHUB_REPOSITORY\",\"commit\":\"$GITHUB_SHA\",\"ref\":\"$GITHUB_REF\",\"head\":\"$GITHUB_HEAD_REF\",\"workflow\":\"$GITHUB_WORKFLOW\"}"
+        WEBHOOK_DATA=$(jo event="$EVENT_NAME" repository="$GITHUB_REPOSITORY" commit="$GITHUB_SHA" ref="$GITHUB_REF" head="$GITHUB_HEAD_REF" workflow="$GITHUB_WORKFLOW")
     fi
     
-    JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED=`echo "$WEBHOOK_DATA" | sed 's/^{\(.*\)}$/\1/'`
     if [ -n "$data" ]; then
         CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
-        WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"requestID\":\"$REQUEST_ID\",\"data\":$CUSTOM_JSON_DATA}"
+        WEBHOOK_DATA=$(jq -s '.[0] * .[1]' <(echo $WEBHOOK_DATA) <(jo requestID="$REQUEST_ID" data="$CUSTOM_JSON_DATA"))
     else
-        WEBHOOK_DATA="{$JSON_WITH_OPEN_CLOSE_BRACKETS_STRIPPED,\"requestID\":\"$REQUEST_ID\"}"
+        WEBHOOK_DATA=$(jq -s '.[0] * .[1]' <(echo $WEBHOOK_DATA) <(jo requestID="$REQUEST_ID"))
     fi
 
 fi
