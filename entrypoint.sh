@@ -1,17 +1,17 @@
 #!/bin/bash
 
-webhook_auth=$INPUT_WEBHOOK_AUTH
-webhook_secret=$INPUT_WEBHOOK_SECRET
-webhook_type=$INPUT_WEBHOOK_TYPE
-webhook_url=$INPUT_WEBHOOK_URL
-silent=$INPUT_SILENT
-verbose=$INPUT_VERBOSE
-verify_ssl=$INPUT_VERIFY_SSL
-timeout=$INPUT_TIMEOUT
-max_time=$INPUT_MAX_TIME
-curl_opts=$INPUT_CURL_OPTS
-event_name=$INPUT_EVENT_NAME
-data=$INPUT_DATA
+webhook_auth=${INPUT_WEBHOOK_AUTH:-$WEBHOOK_AUTH}
+webhook_secret=${INPUT_WEBHOOK_SECRET:-$WEBHOOK_SECRET}
+webhook_type=${INPUT_WEBHOOK_TYPE:-$WEBHOOK_TYPE}
+webhook_url=${INPUT_WEBHOOK_URL:-$WEBHOOK_URL}
+silent=${INPUT_SILENT:-$SILET}
+verbose=${INPUT_VERBOSE:-$VERBOSE}
+verify_ssl=${INPUT_VERIFY_SSL:-$VERIFY_SSL}
+timeout=${INPUT_TIMEOUT:-$TIMEOUT}
+max_time=${INPUT_MAX_TIME:-$MAX_TIME}
+curl_opts=${INPUT_CURL_OPTS:-$CURL_OPTS}
+event_name=${INPUT_EVENT_NAME:-$EVENT_NAME}
+data=${INPUT_DATA:-$DATA}
 
 urlencode() {
     local length="${#1}"
