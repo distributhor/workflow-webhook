@@ -94,7 +94,7 @@ if [ -n "$webhook_auth" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
-options="--http1.1 --fail"
+options="--http1.1 --fail-with-body"
 
 if [ "$verbose" = true ]; then
     options="$options -v"
@@ -126,7 +126,7 @@ if [ "$verbose" = true ]; then
     echo "-H 'X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256' \\"
     echo "-H 'X-GitHub-Delivery: $REQUEST_ID' \\"
     echo "-H 'X-GitHub-Event: $EVENT_NAME' \\"
-    echo "--data '$WEBHOOK_DATA' $WEBHOOK_ENDPOINT"
+    echo "--data '$WEBHOOK_DATA'"
 fi
 
 response=$(curl $options \
