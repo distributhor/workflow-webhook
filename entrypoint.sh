@@ -132,6 +132,8 @@ if [ "$verbose" = true ]; then
     echo "--data '$WEBHOOK_DATA'"
 fi
 
+set +e
+
 response=$(curl $options \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: GitHub-Hookshot/760256b" \
@@ -140,8 +142,6 @@ response=$(curl $options \
     -H "X-GitHub-Delivery: $REQUEST_ID" \
     -H "X-GitHub-Event: $EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
-
-echo "STATUS: $?"
 
 # echo "response-body=$response" >> $GITHUB_OUTPUT
 echo "response-body<<$REQUEST_ID" >> $GITHUB_OUTPUT
