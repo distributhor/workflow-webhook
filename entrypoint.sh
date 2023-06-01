@@ -98,11 +98,13 @@ options="--http1.1 --fail-with-body"
 
 if [ "$verbose" = true ]; then
     options="$options -v"
-    # The -s disables the progress meter, as well as error messages. 
-    # We want Curl to report errors, which we reenable with -S
     options="$options -sS"
 elif [ "$silent" = true ]; then
     options="$options -s"
+else
+    # The -s disables the progress meter, as well as error messages. 
+    # We want Curl to report errors, which we reenable with -S
+    options="$options -sS"
 fi
 
 if [ "$verify_ssl" = false ]; then
