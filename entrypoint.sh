@@ -143,6 +143,8 @@ response=$(curl $options \
     -H "X-GitHub-Event: $EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
+STATUS=$?
+
 # echo "response-body=$response" >> $GITHUB_OUTPUT
 echo "response-body<<$REQUEST_ID" >> $GITHUB_OUTPUT
 echo "$response" >> $GITHUB_OUTPUT
@@ -152,3 +154,5 @@ if [ "$verbose" = true ]; then
     echo "Webhook Response:"
     echo "${response}"
 fi
+
+exit $STATUS
