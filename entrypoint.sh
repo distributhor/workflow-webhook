@@ -98,6 +98,9 @@ options="--http1.1 --fail-with-body"
 
 if [ "$verbose" = true ]; then
     options="$options -v"
+    # The -s disables the progress meter, as well as error messages. 
+    # We want Curl to report errors, which we reenable with -S
+    options="$options -sS"
 elif [ "$silent" = true ]; then
     options="$options -s"
 fi
@@ -138,8 +141,9 @@ response=$(curl $options \
     -H "X-GitHub-Event: $EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
-# echo "response-body=$response" >> $GITHUB_OUTPUT
+echo "STATUS: $?"
 
+# echo "response-body=$response" >> $GITHUB_OUTPUT
 echo "response-body<<$REQUEST_ID" >> $GITHUB_OUTPUT
 echo "$response" >> $GITHUB_OUTPUT
 echo "$REQUEST_ID" >> $GITHUB_OUTPUT
