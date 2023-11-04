@@ -187,9 +187,9 @@ If the `webhook_auth_type` is set to `header`, then the expecation is to receive
 in format to `basic`, except that the delimiter (a colon) will delimit a header name and header
 value. For example a value of `Token:ABC` will set a header named `Token` with a value of `ABC`.
 If no colon is present (no delimiter specified) then it will default to setting a header named
-`Authorization` of which the verbatim value will be the value configured here (no 'bearer').
-As an example, when configured with a value of `ABC`, a header named `Authorization` will be set
-to the value `ABC`.
+`Authorization` of which the value will be whatever was configured for `${webhook_auth}`, 
+ie (no 'bearer') prefix. As an example, when configured with a value of `ABC`, a header named 
+`Authorization` will be set to the value `ABC`.
 <br/><br/>
 
 ```yml 
