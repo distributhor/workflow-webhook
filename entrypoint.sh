@@ -210,24 +210,19 @@ if [ -n "$curl_opts" ]; then
     options="$options $curl_opts"
 fi
 
-if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
-    options="$options -H 'Authorization: Bearer $webhook_auth'"
-fi
+# if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
+#     options="$options -H 'Authorization: Bearer $webhook_auth'"
+# fi
 
-if [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
-    header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
-    header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
-    if [ -z "$header_value" ]; then
-        # if the webhook_auth value contains no colon, then it is a configuration error
-        # we should not handle such cases, but in instead of throwing an error, we try
-        # and consider a potential fail-safe for user error, and resort to setting the
-        # entire value as an Authorization token - the attempt at trying to resolve what 
-        # the author meant may or may not be a better approach than just letting it error?
-        options="$options -H 'Authorization: $webhook_auth'"
-    else
-        options="$options -H '$header_name: $header_value'"
-    fi
-fi
+# if [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
+#     header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
+#     header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
+#     if [ -z "$header_value" ]; then
+#         options="$options -H 'Authorization: $webhook_auth'"
+#     else
+#         options="$options -H '$header_name: $header_value'"
+#     fi
+# fi
 
 if [ "$verbose" = true ]; then
     echo "curl $options \\"
@@ -242,7 +237,9 @@ fi
 
 set +e
 
-response=$(curl $options \
+if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
+    response=$(curl $options \
+    -H "Authorization: Bearer $webhook_auth" \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "User-Agent: GitHub-Hookshot/760256b" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
@@ -250,6 +247,45 @@ response=$(curl $options \
     -H "X-GitHub-Delivery: $REQUEST_ID" \
     -H "X-GitHub-Event: $EVENT_NAME" \
     --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
+    header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
+    header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
+    if [ -z "$header_value" ]; then
+        # if the webhook_auth value contains no colon, then it is a configuration error
+        # we should not handle such cases, but in instead of throwing an error, we try
+        # and consider a potential fail-safe for user error, and resort to setting the
+        # entire value as an Authorization token - the attempt at trying to resolve what 
+        # the author meant may or may not be a better approach than just letting it error?
+        response=$(curl $options \
+        -H "Authorization: $webhook_auth" \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: GitHub-Hookshot/760256b" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+        -H "X-GitHub-Delivery: $REQUEST_ID" \
+        -H "X-GitHub-Event: $EVENT_NAME" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+    else
+        response=$(curl $options \
+        -H "$header_name: $header_value" \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: GitHub-Hookshot/760256b" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+        -H "X-GitHub-Delivery: $REQUEST_ID" \
+        -H "X-GitHub-Event: $EVENT_NAME" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+    fi
+else
+    response=$(curl $options \
+    -H "Content-Type: $CONTENT_TYPE" \
+    -H "User-Agent: GitHub-Hookshot/760256b" \
+    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+    -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+    -H "X-GitHub-Delivery: $REQUEST_ID" \
+    -H "X-GitHub-Event: $EVENT_NAME" \
+    --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+fi
 
 CURL_STATUS=$?
 
