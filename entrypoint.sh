@@ -210,20 +210,6 @@ if [ -n "$curl_opts" ]; then
     options="$options $curl_opts"
 fi
 
-# if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
-#     options="$options -H 'Authorization: Bearer $webhook_auth'"
-# fi
-
-# if [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
-#     header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
-#     header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
-#     if [ -z "$header_value" ]; then
-#         options="$options -H 'Authorization: $webhook_auth'"
-#     else
-#         options="$options -H '$header_name: $header_value'"
-#     fi
-# fi
-
 if [ "$verbose" = true ]; then
     echo "curl $options \\"
     echo "-H 'Content-Type: $CONTENT_TYPE' \\"
