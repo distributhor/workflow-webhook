@@ -211,7 +211,7 @@ if [ -n "$curl_opts" ]; then
 fi
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
-    options="-H 'Authorization: Bearer $webhook_auth' \\"
+    options="$options -H 'Authorization: Bearer $webhook_auth'"
 fi
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
@@ -223,9 +223,9 @@ if [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         # and consider a potential fail-safe for user error, and resort to setting the
         # entire value as an Authorization token - the attempt at trying to resolve what 
         # the author meant may or may not be a better approach than just letting it error?
-        options="-H 'Authorization: $webhook_auth' \\"
+        options="$options -H 'Authorization: $webhook_auth'"
     else
-        options="-H '$header_name: $header_value' \\"
+        options="$options -H '$header_name: $header_value'"
     fi
 fi
 
