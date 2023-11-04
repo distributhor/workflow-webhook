@@ -169,6 +169,7 @@ with `webhook_auth`. The expectations for how each option behaves, is explained 
 ```yml 
   webhook_auth: "username:password"
   webhook_auth: "Token:ABC"
+  webhook_auth: "ABC"
 ```
 
 The credentials to be used for authentication of the the endpoint. If not configured,
