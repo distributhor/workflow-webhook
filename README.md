@@ -159,34 +159,33 @@ link. In general it is advisable to use a webhook secret.<br/><br/>
   webhook_auth_type: "bearer"
 ```
 
-What type of authentication to use for invoking the webhook URL. Valid values are "basic", 
-"bearer", "header". Defaults to "basic" if not specified. In addition, if no value
-is set for "webhook_auth", then it is assumed that no authentication is required, and this
+The type of authentication to use when invoking the webhook URL. Valid values are `basic`, 
+`bearer` and `header`. Defaults to `basic` if not specified. In addition, if no value
+is set for `webhook_auth`, then it is assumed that no authentication is required, and this
 value, even if configured, will have no effect. It only takes effect when used in conjunction
-with "webhook_auth". The expectations for how each option behaves, is explained in the
-"webhook_auth" section below.<br/><br/>
+with `webhook_auth`. The expectations for how each option behaves, is explained in the
+`webhook_auth` section below.<br/><br/>
 
 ```yml 
   webhook_auth: "username:password"
-  webhook_auth: "Authorization:ACCESS_TOKEN"
+  webhook_auth: "Token:ABC"
 ```
 
 The credentials to be used for authentication of the the endpoint. If not configured,
 authentication is assumed not to be required.<br/><br/>
 
-If the "webhook_auth_type" is set to "basic", then this value is expected to be a 
+If the `webhook_auth_type` is set to `basic`, then this value is expected to be a 
 `username:password` string, used for BASIC authentication against the endpoint. It must follow
 this format, as specified in the `curl` man pages, since it is passed verbatim to the 
-`curl -u` option<br/><br/>
+`curl -u` option.<br/><br/>
 
-If the "webhook_auth_type" is set to "bearer", then this value is expected to be an 
-access token string. It will be set in a header as follows: `Authorization: Bearer ${webhook_auth}`
+If the `webhook_auth_type` is set to `bearer`, then this value is expected to be an 
+access token. It will set a header named `Authorization` with a value of `Bearer ${webhook_auth}`.
 <br/><br/>
 
-If the "webhook_auth_type" is set to "header", then the expecation is to receive a string similar
-in format to **basic**, except that the delimiter (a colon) will delimit a header name and header
-value. For example the value `Authorization:ABC` will set a header as follows: 
-`Authorization: ABC`
+If the `webhook_auth_type` is set to `header`, then the expecation is to receive a string similar
+in format to `basic`, except that the delimiter (a colon) will delimit a header name and header
+value. For example a value of `Token:ABC` will set a header named `Token` with a value of `ABC`.
 <br/><br/>
 
 ```yml 
