@@ -8,7 +8,7 @@ fi
 
 if [ -n "$INPUT_WEBHOOK_AUTH_TYPE" ]; then
     webhook_auth_type=$INPUT_WEBHOOK_AUTH_TYPE
-elif [ -n "$WEBHOOK_AUTH" ]; then
+elif [ -n "$WEBHOOK_AUTH_TYPE" ]; then
     webhook_auth_type=$WEBHOOK_AUTH_TYPE
 fi
 
