@@ -48,7 +48,7 @@ Send the JSON (default) payload to a webhook:
 ```yml
     - name: Invoke deployment hook
       uses: distributhor/workflow-webhook@v3
-      env:
+      with:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
 ```
@@ -75,7 +75,7 @@ Add additional data to the payload:
 ```yml
     - name: Invoke deployment hook
       uses: distributhor/workflow-webhook@v2
-      env:
+      with:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
         data: '{ "weapon": "hammer", "drink" : "beer" }'
@@ -105,7 +105,7 @@ Send a form-urlencoded payload instead:
 ```yml
     - name: Invoke deployment hook
       uses: distributhor/workflow-webhook@v3
-      env:
+      with:
         webhook_type: 'form-urlencoded'
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
@@ -125,7 +125,7 @@ to the default JSON snippet above), then configure the webhook with a `webhook_t
 ```yml
     - name: Invoke deployment hook
       uses: distributhor/workflow-webhook@v3
-      env:
+      with:
         webhook_type: 'json-extended'
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
@@ -156,12 +156,38 @@ This is useful for use-cases where the webhook URL might be an obscure, random o
 link. In general it is advisable to use a webhook secret.<br/><br/>
 
 ```yml 
-  webhook_auth: "username:password"
+  webhook_auth_type: "bearer"
 ```
 
-Credentials to be used for BASIC authentication against the endpoint. If not configured,
-authentication is assumed not to be required. If configured, it must follow the format
-`username:password`, which will be used as the BASIC auth credential.<br/><br/>
+What type of authentication to use for invoking the webhook URL. Valid values are "basic", 
+"bearer", "header". Defaults to "basic" if not specified. In addition, if no value
+is set for "webhook_auth", then it is assumed that no authentication is required, and this
+value, even if configured, will have no effect. It only takes effect when used in conjunction
+with "webhook_auth". The expectations for how each option behaves, is explained in the
+"webhook_auth" section below.<br/><br/>
+
+```yml 
+  webhook_auth: "username:password"
+  webhook_auth: "Authorization:ACCESS_TOKEN"
+```
+
+The credentials to be used for authentication of the the endpoint. If not configured,
+authentication is assumed not to be required.<br/><br/>
+
+If the "webhook_auth_type" is set to "basic", then this value is expected to be a 
+`username:password` string, used for BASIC authentication against the endpoint. It must follow
+this format, as specified in the `curl` man pages, since it is passed verbatim to the 
+`curl -u` option<br/><br/>
+
+If the "webhook_auth_type" is set to "bearer", then this value is expected to be an 
+access token string. It will be set in a header as follows: `Authorization: Bearer ${webhook_auth}`
+<br/><br/>
+
+If the "webhook_auth_type" is set to "header", then the expecation is to receive a string similar
+in format to **basic**, except that the delimiter (a colon) will delimit a header name and header
+value. For example the value `Authorization:ABC` will set a header as follows: 
+`Authorization: ABC`
+<br/><br/>
 
 ```yml 
   webhook_type: "json | form-urlencoded | json-extended"

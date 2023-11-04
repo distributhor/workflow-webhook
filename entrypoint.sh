@@ -6,6 +6,12 @@ elif [ -n "$WEBHOOK_AUTH" ]; then
     webhook_auth=$WEBHOOK_AUTH
 fi
 
+if [ -n "$INPUT_WEBHOOK_AUTH_TYPE" ]; then
+    webhook_auth_type=$INPUT_WEBHOOK_AUTH_TYPE
+elif [ -n "$WEBHOOK_AUTH" ]; then
+    webhook_auth_type=$WEBHOOK_AUTH_TYPE
+fi
+
 if [ -n "$INPUT_WEBHOOK_SECRET" ]; then
     webhook_secret=$INPUT_WEBHOOK_SECRET
 elif [ -n "$WEBHOOK_SECRET" ]; then
@@ -163,7 +169,15 @@ WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl dgst -sha1 -hmac "$webhook
 WEBHOOK_SIGNATURE_256=$(echo -n "$WEBHOOK_DATA" | openssl dgst -sha256 -hmac "$webhook_secret" -binary | xxd -p |tr -d '\n')
 WEBHOOK_ENDPOINT=$webhook_url
 
-if [ -n "$webhook_auth" ]; then
+if [ -n "$webhook_auth_type" ] && [ "$webhook_auth_type" == "bearer" ]; then
+    auth_type="bearer"
+elif [ -n "$webhook_auth_type" ] && [ "$webhook_auth_type" == "header" ]; then
+    auth_type="header"
+else
+    auth_type="basic"
+fi
+
+if [ -n "$webhook_auth" ] && [ "$auth_type" == "basic" ]; then
     WEBHOOK_ENDPOINT="-u $webhook_auth $webhook_url"
 fi
 
@@ -194,6 +208,25 @@ fi
 
 if [ -n "$curl_opts" ]; then
     options="$options $curl_opts"
+fi
+
+if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
+    options="-H 'Authorization: Bearer $webhook_auth' \\"
+fi
+
+if [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
+    header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
+    header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
+    if [ -z "$header_value" ]; then
+        # if the webhook_auth value contains no colon, then it is a configuration error
+        # we should not handle such cases, but in instead of throwing an error, we try
+        # and consider a potential fail-safe for user error, and resort to setting the
+        # entire value as an Authorization token - the attempt at trying to resolve what 
+        # the author meant may or may not be a better approach than just letting it error?
+        options="-H 'Authorization: $webhook_auth' \\"
+    else
+        options="-H '$header_name: $header_value' \\"
+    fi
 fi
 
 if [ "$verbose" = true ]; then

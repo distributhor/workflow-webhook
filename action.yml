@@ -7,26 +7,29 @@ inputs:
   webhook_secret:
     description: 'The secret with which a signature hash is generated. If omitted, the URL itself will be used as the value with which to generate the hash.'
   webhook_auth:
-    description: 'Credentials to be used for BASIC authentication (optional)'
+    description: 'Optional. The BASIC auth credentials (a "username:password" string) OR a bearer access token OR a custom header to be used for authentication'
+  webhook_auth_type:
+    description: 'Optional. What type of authentication to use for invoking the webhook URL. Valid values are "basic", "bearer", "header". Defaults to "basic" if not specified.'
+    default: "basic"
   webhook_type: 
     description: 'json | form-urlencoded | json-extended'
   verbose:
-    description: 'Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.'
+    description: 'Optional. Set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.'
   silent:
-    description: 'Optional, set to true to disable output and therefore IP leaking'
+    description: 'Optional. Set to true to disable output and therefore IP leaking.'
   timeout:
-    description: 'Optional, set a maximum time, in seconds, by which to establish a connection to the server'
+    description: 'Optional. Set a maximum time, in seconds, by which to establish a connection to the server.'
   max_time:
-    description: 'Optional, set a maximum time, in seconds, the request to the server can take, before being cancelled'
+    description: 'Optional. Set a maximum time, in seconds, the request to the server can take, before being cancelled.'
   curl_opts:
-    description: 'Optional (and experimental), to pass in arbitrary options to the curl request'
+    description: 'Optional (and experimental). Pass arbitrary options to the curl request.'
   verify_ssl:
-    description: 'Optional, set to false to disable verification of SSL certificates'
+    description: 'Optional. Set to false to disable verification of SSL certificates.'
     default: true
   event_name:
-    description: 'Optional, a custom event name sent to the webhook endpoint, if not defined it defaults to GITHUB_EVENT_NAME'
+    description: 'Optional. Specify a custom event name sent to the webhook endpoint, if not defined it defaults to GITHUB_EVENT_NAME.'
   data:
-    description: 'Optional, additional data to include in the payload'
+    description: 'Optional. Specify additional data to include in the payload.'
 
 outputs:
   response-body:
@@ -34,8 +37,8 @@ outputs:
 
 runs:
   using: 'docker'
-  # image: 'Dockerfile'
-  image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.6'
+  image: 'Dockerfile'
+  # image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.6'
 
 branding:
   icon: 'terminal'
