@@ -1,17 +1,90 @@
 #!/bin/bash
 
-webhook_auth=${INPUT_WEBHOOK_AUTH:-$WEBHOOK_AUTH}
-webhook_secret=${INPUT_WEBHOOK_SECRET:-$WEBHOOK_SECRET}
-webhook_type=${INPUT_WEBHOOK_TYPE:-$WEBHOOK_TYPE}
-webhook_url=${INPUT_WEBHOOK_URL:-$WEBHOOK_URL}
-silent=${INPUT_SILENT:-$SILET}
-verbose=${INPUT_VERBOSE:-$VERBOSE}
-verify_ssl=${INPUT_VERIFY_SSL:-$VERIFY_SSL}
-timeout=${INPUT_TIMEOUT:-$TIMEOUT}
-max_time=${INPUT_MAX_TIME:-$MAX_TIME}
-curl_opts=${INPUT_CURL_OPTS:-$CURL_OPTS}
-event_name=${INPUT_EVENT_NAME:-$EVENT_NAME}
-data=${INPUT_DATA:-$DATA}
+# webhook_auth=${INPUT_WEBHOOK_AUTH:-$WEBHOOK_AUTH}
+# webhook_secret=${INPUT_WEBHOOK_SECRET:-$WEBHOOK_SECRET}
+# webhook_type=${INPUT_WEBHOOK_TYPE:-$WEBHOOK_TYPE}
+# webhook_url=${INPUT_WEBHOOK_URL:-$WEBHOOK_URL}
+# silent=${INPUT_SILENT:-$SILENT}
+# verbose=${INPUT_VERBOSE:-$VERBOSE}
+# verify_ssl=${INPUT_VERIFY_SSL:-$VERIFY_SSL}
+# timeout=${INPUT_TIMEOUT:-$TIMEOUT}
+# max_time=${INPUT_MAX_TIME:-$MAX_TIME}
+# curl_opts=${INPUT_CURL_OPTS:-$CURL_OPTS}
+# event_name=${INPUT_EVENT_NAME:-$EVENT_NAME}
+# data=${INPUT_DATA:-$DATA}
+
+if [ -n "$INPUT_WEBHOOK_AUTH" ]; then
+    webhook_auth=$INPUT_WEBHOOK_AUTH
+elif [ -n "$WEBHOOK_AUTH" ]; then
+    webhook_auth=$WEBHOOK_AUTH
+fi
+
+if [ -n "$INPUT_WEBHOOK_SECRET" ]; then
+    webhook_secret=$INPUT_WEBHOOK_SECRET
+elif [ -n "$WEBHOOK_SECRET" ]; then
+    webhook_secret=$WEBHOOK_SECRET
+fi
+
+if [ -n "$INPUT_WEBHOOK_TYPE" ]; then
+    webhook_type=$INPUT_WEBHOOK_TYPE
+elif [ -n "$WEBHOOK_TYPE" ]; then
+    webhook_type=$WEBHOOK_TYPE
+fi
+
+if [ -n "$INPUT_WEBHOOK_URL" ]; then
+    webhook_url=$INPUT_WEBHOOK_URL
+elif [ -n "$WEBHOOK_URL" ]; then
+    webhook_url=$WEBHOOK_URL
+fi
+
+if [ -n "$INPUT_SILENT" ]; then
+    silent=$INPUT_SILENT
+elif [ -n "$SILENT" ]; then
+    silent=$SILENT
+fi
+
+if [ -n "$INPUT_VERBOSE" ]; then
+    verbose=$INPUT_VERBOSE
+elif [ -n "$VERBOSE" ]; then
+    verbose=$VERBOSE
+fi
+
+if [ -n "$INPUT_VERIFY_SSL" ]; then
+    verify_ssl=$INPUT_VERIFY_SSL
+elif [ -n "$VERIFY_SSL" ]; then
+    verify_ssl=$VERIFY_SSL
+fi
+
+if [ -n "$INPUT_TIMEOUT" ]; then
+    timeout=$INPUT_TIMEOUT
+elif [ -n "$TIMEOUT" ]; then
+    timeout=$TIMEOUT
+fi
+
+if [ -n "$INPUT_MAX_TIME" ]; then
+    max_time=$INPUT_MAX_TIME
+elif [ -n "$MAX_TIME" ]; then
+    max_time=$MAX_TIME
+fi
+
+if [ -n "$INPUT_CURL_OPTS" ]; then
+    curl_opts=$INPUT_CURL_OPTS
+elif [ -n "$CURL_OPTS" ]; then
+    curl_opts=$CURL_OPTS
+fi
+
+if [ -n "$INPUT_EVENT_NAME" ]; then
+    event_name=$INPUT_EVENT_NAME
+elif [ -n "$EVENT_NAME" ]; then
+    event_name=$EVENT_NAME
+fi
+
+if [ -n "$INPUT_DATA" ]; then
+    data=$INPUT_DATA
+elif [ -n "$DATA" ]; then
+    data=$DATA
+fi
+
 
 urlencode() {
     local length="${#1}"
