@@ -1,83 +1,30 @@
 #!/bin/bash
+# Enable the printing of trace messages
+set -o errtrace
+trap 'echo "Error occurred on line $BASH_LINENO"; exit 1' ERR
 
-if [ -n "$INPUT_WEBHOOK_AUTH" ]; then
-    webhook_auth=$INPUT_WEBHOOK_AUTH
-elif [ -n "$WEBHOOK_AUTH" ]; then
-    webhook_auth=$WEBHOOK_AUTH
-fi
+# Github Inputs/Envs Fix: Iterate over environment variables starting with INPUT_ and export them as lowercase variables without input_ prefix.
+for var in "${!INPUT_@}"; do
+  # Remove the INPUT_ prefix
+  name="${var#INPUT_}"
 
-if [ -n "$INPUT_WEBHOOK_AUTH_TYPE" ]; then
-    webhook_auth_type=$INPUT_WEBHOOK_AUTH_TYPE
-elif [ -n "$WEBHOOK_AUTH_TYPE" ]; then
-    webhook_auth_type=$WEBHOOK_AUTH_TYPE
-fi
+  # Convert name to lowercase
+  name_lower="${name,,}"
 
-if [ -n "$INPUT_WEBHOOK_SECRET" ]; then
-    webhook_secret=$INPUT_WEBHOOK_SECRET
-elif [ -n "$WEBHOOK_SECRET" ]; then
-    webhook_secret=$WEBHOOK_SECRET
-fi
+  # Access the value of the environment variable
+  value="${!var}"
 
-if [ -n "$INPUT_WEBHOOK_TYPE" ]; then
-    webhook_type=$INPUT_WEBHOOK_TYPE
-elif [ -n "$WEBHOOK_TYPE" ]; then
-    webhook_type=$WEBHOOK_TYPE
-fi
-
-if [ -n "$INPUT_WEBHOOK_URL" ]; then
-    webhook_url=$INPUT_WEBHOOK_URL
-elif [ -n "$WEBHOOK_URL" ]; then
-    webhook_url=$WEBHOOK_URL
-fi
-
-if [ -n "$INPUT_SILENT" ]; then
-    silent=$INPUT_SILENT
-elif [ -n "$SILENT" ]; then
-    silent=$SILENT
-fi
-
-if [ -n "$INPUT_VERBOSE" ]; then
-    verbose=$INPUT_VERBOSE
-elif [ -n "$VERBOSE" ]; then
-    verbose=$VERBOSE
-fi
-
-if [ -n "$INPUT_VERIFY_SSL" ]; then
-    verify_ssl=$INPUT_VERIFY_SSL
-elif [ -n "$VERIFY_SSL" ]; then
-    verify_ssl=$VERIFY_SSL
-fi
-
-if [ -n "$INPUT_TIMEOUT" ]; then
-    timeout=$INPUT_TIMEOUT
-elif [ -n "$TIMEOUT" ]; then
-    timeout=$TIMEOUT
-fi
-
-if [ -n "$INPUT_MAX_TIME" ]; then
-    max_time=$INPUT_MAX_TIME
-elif [ -n "$MAX_TIME" ]; then
-    max_time=$MAX_TIME
-fi
-
-if [ -n "$INPUT_CURL_OPTS" ]; then
-    curl_opts=$INPUT_CURL_OPTS
-elif [ -n "$CURL_OPTS" ]; then
-    curl_opts=$CURL_OPTS
-fi
-
-if [ -n "$INPUT_EVENT_NAME" ]; then
-    event_name=$INPUT_EVENT_NAME
-elif [ -n "$EVENT_NAME" ]; then
-    event_name=$EVENT_NAME
-fi
-
-if [ -n "$INPUT_DATA" ]; then
-    data=$INPUT_DATA
-elif [ -n "$DATA" ]; then
-    data=$DATA
-fi
-
+  # Check if the variable is already exported
+  if [[ -z "${!name_lower+x}" ]]; then
+    if [ "$fine" = true ]; then
+      # Export the variable if it's not already present
+      echo "INFO: Converting INPUT_${name}=$value to $name_lower=$value"
+    fi
+    export "$name_lower"="$value"
+  else
+    echo "WARN: Variable already exists with $(env | grep "${name_lower}="), not exporting."
+  fi
+done
 
 urlencode() {
     local length="${#1}"
