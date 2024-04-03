@@ -172,9 +172,10 @@ set +e
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
     response=$(curl $options \
-    -H "Authorization: Bearer $webhook_auth" \
+    -H "Authorization: Bearer $webhook_auth" \  
     -H "Content-Type: $CONTENT_TYPE" \
-    -H "User-Agent: GitHub-Hookshot/760256b" \
+    -H "Connection: close" \
+    -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
     -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
     -H "X-GitHub-Delivery: $REQUEST_ID" \
@@ -192,7 +193,8 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         response=$(curl $options \
         -H "Authorization: $webhook_auth" \
         -H "Content-Type: $CONTENT_TYPE" \
-        -H "User-Agent: GitHub-Hookshot/760256b" \
+        -H "Connection: close" \
+        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
         -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
         -H "X-GitHub-Delivery: $REQUEST_ID" \
@@ -202,7 +204,8 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         response=$(curl $options \
         -H "$header_name: $header_value" \
         -H "Content-Type: $CONTENT_TYPE" \
-        -H "User-Agent: GitHub-Hookshot/760256b" \
+        -H "Connection: close" \
+        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
         -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
         -H "X-GitHub-Delivery: $REQUEST_ID" \
@@ -212,7 +215,8 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
 else
     response=$(curl $options \
     -H "Content-Type: $CONTENT_TYPE" \
-    -H "User-Agent: GitHub-Hookshot/760256b" \
+    -H "Connection: close" \
+    -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
     -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
     -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
     -H "X-GitHub-Delivery: $REQUEST_ID" \
