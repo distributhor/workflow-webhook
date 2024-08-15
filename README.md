@@ -74,7 +74,7 @@ Add additional data to the payload:
 
 ```yml
     - name: Invoke deployment hook
-      uses: distributhor/workflow-webhook@v2
+      uses: distributhor/workflow-webhook@v3
       with:
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
