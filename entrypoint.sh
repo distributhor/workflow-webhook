@@ -219,7 +219,7 @@ fi
 auth_header=''
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
-    auth_header=" -H 'Authorization: Bearer $webhook_auth'"
+    auth_header="-H 'Authorization: Bearer $webhook_auth'"
 elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
     header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
     header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
@@ -229,9 +229,9 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         # and consider a potential fail-safe for user error, and resort to setting the
         # entire value as an Authorization token - the attempt at trying to resolve what 
         # the author meant may or may not be a better approach than just letting it error?
-        auth_header=" -H 'Authorization: $webhook_auth'"
+        auth_header="-H 'Authorization: $webhook_auth'"
     else
-        auth_header=" -H '$header_name: $header_value'"
+        auth_header="-H '$header_name: $header_value'"
     fi
 fi
 
@@ -249,9 +249,9 @@ fi
 echo "$WEBHOOK_ENDPOINT"
 
 if [ "$verbose" = true ]; then
-    echo "curl $options \"
+    echo "curl $options \\"
     if [ -n "$auth_header" ]; then
-        echo "$auth_header \"
+        echo "$auth_header \\"
     fi
     echo "$headers \\"
     echo "--data '$WEBHOOK_DATA' $WEBHOOK_ENDPOINT"
