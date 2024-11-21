@@ -246,7 +246,7 @@ if [ "$curl_connection_close" = true ]; then
     headers="$headers -H 'Connection: close'"
 fi
 
-echo "$WEBHOOK_ENDPOINT"
+echo "ABC${WEBHOOK_ENDPOINT}XYZ"
 
 if [ "$verbose" = true ]; then
     echo "curl $options \\"
