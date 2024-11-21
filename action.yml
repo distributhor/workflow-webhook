@@ -39,8 +39,8 @@ outputs:
     description: The response body of the webook response
 
 runs:
-  using: 'docker'
-  # image: 'Dockerfile'
+  # using: 'docker'
+  image: 'Dockerfile'
   image: 'docker://ghcr.io/distributhor/workflow-webhook-container:v3.0.7'
 
 branding:
