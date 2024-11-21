@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Enable the printing of trace messages
 set -o errtrace
 trap 'echo "Error occurred on line $BASH_LINENO"; exit 1' ERR
@@ -25,6 +26,60 @@ for var in "${!INPUT_@}"; do
     echo "WARN: Variable already exists with $(env | grep "${name_lower}="), not exporting."
   fi
 done
+
+# The following manual variable conversions are still necessary for backwards compatibility with previous versions.
+# This is now considered deprecated, and for v4 of this webhook it will be removed.
+if [ -n "$WEBHOOK_AUTH" ]; then
+    webhook_auth=$WEBHOOK_AUTH
+fi
+
+if [ -n "$WEBHOOK_AUTH_TYPE" ]; then
+    webhook_auth_type=$WEBHOOK_AUTH_TYPE
+fi
+
+if [ -n "$WEBHOOK_SECRET" ]; then
+    webhook_secret=$WEBHOOK_SECRET
+fi
+
+if [ -n "$WEBHOOK_TYPE" ]; then
+    webhook_type=$WEBHOOK_TYPE
+fi
+
+if [ -n "$WEBHOOK_URL" ]; then
+    webhook_url=$WEBHOOK_URL
+fi
+
+if [ -n "$SILENT" ]; then
+    silent=$SILENT
+fi
+
+if [ -n "$VERBOSE" ]; then
+    verbose=$VERBOSE
+fi
+
+if [ -n "$VERIFY_SSL" ]; then
+    verify_ssl=$VERIFY_SSL
+fi
+
+if [ -n "$TIMEOUT" ]; then
+    timeout=$TIMEOUT
+fi
+
+if [ -n "$MAX_TIME" ]; then
+    max_time=$MAX_TIME
+fi
+
+if [ -n "$CURL_OPTS" ]; then
+    curl_opts=$CURL_OPTS
+fi
+
+if [ -n "$EVENT_NAME" ]; then
+    event_name=$EVENT_NAME
+fi
+
+if [ -n "$DATA" ]; then
+    data=$DATA
+fi
 
 urlencode() {
     local length="${#1}"
