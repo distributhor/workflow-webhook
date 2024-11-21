@@ -216,6 +216,24 @@ if [ -n "$curl_opts" ]; then
     options="$options $curl_opts"
 fi
 
+# if [ "$verbose" = true ]; then
+#     echo "curl $options \\"
+#     echo "-H 'Content-Type: $CONTENT_TYPE' \\"
+#     echo "-H 'User-Agent: GitHub-Hookshot/$REQUEST_ID' \\"
+#     echo "-H 'X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE' \\"
+#     echo "-H 'X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256' \\"
+#     echo "-H 'X-GitHub-Delivery: $REQUEST_ID' \\"
+#     echo "-H 'X-GitHub-Event: $EVENT_NAME' \\"
+
+#     if [ "$curl_connection_close" = true ]; then
+#         echo "-H 'Connection: close' \\"
+#     fi
+
+#     echo "--data '$WEBHOOK_DATA'"
+# fi
+
+# set +e
+
 auth_header=''
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
