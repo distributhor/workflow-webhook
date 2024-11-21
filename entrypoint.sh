@@ -219,7 +219,7 @@ fi
 auth_header=''
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
-    auth_header="-H 'Authorization: Bearer $webhook_auth'"
+    auth_header="-H \"Authorization: Bearer $webhook_auth\""
 elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
     header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
     header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
@@ -229,24 +229,24 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         # and consider a potential fail-safe for user error, and resort to setting the
         # entire value as an Authorization token - the attempt at trying to resolve what 
         # the author meant may or may not be a better approach than just letting it error?
-        auth_header="-H 'Authorization: $webhook_auth'"
+        auth_header="-H \"Authorization: $webhook_auth\""
     else
-        auth_header="-H '$header_name: $header_value'"
+        auth_header="-H \"$header_name: $header_value\""
     fi
 fi
 
-headers="-H 'Content-Type: $CONTENT_TYPE'"
-headers="$headers -H 'User-Agent: GitHub-Hookshot/$REQUEST_ID'"
-headers="$headers -H 'X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE'"
-headers="$headers -H 'X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256'"
-headers="$headers -H 'X-GitHub-Delivery: $REQUEST_ID'"
-headers="$headers -H 'X-GitHub-Event: $EVENT_NAME'"
+headers="-H \"Content-Type: $CONTENT_TYPE\""
+headers="$headers -H \"User-Agent: GitHub-Hookshot/$REQUEST_ID\""
+headers="$headers -H \"X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE\""
+headers="$headers -H \"X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256\""
+headers="$headers -H \"X-GitHub-Delivery: $REQUEST_ID\""
+headers="$headers -H \"X-GitHub-Event: $EVENT_NAME\""
 
 if [ "$curl_connection_close" = true ]; then
-    headers="$headers -H 'Connection: close'"
+    headers="$headers -H \"Connection: close\""
 fi
 
-if [ "$verbose" = true ]; then
+if [ "$verbose" = true ]; then    
     echo "curl $options \\"
     
     if [ -n "$auth_header" ]; then
@@ -256,8 +256,11 @@ if [ "$verbose" = true ]; then
     fi
     
     echo "--data '$WEBHOOK_DATA'"
-    
-    echo $WEBHOOK_ENDPOINT | sed -E 's/^\s*.*:\/\///g'
+
+    # some console logs will remove the log statement if its a URL
+    # so we need to remove the protocol if we want to display this
+    noproto_webhook_url=`echo $WEBHOOK_ENDPOINT | sed -E 's/^\s*.*:\/\///g'`
+    echo "WEBHOOK_ENDPOINT: $noproto_webhook_url"
 fi
 
 set +e
