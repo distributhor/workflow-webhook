@@ -216,6 +216,10 @@ if [ -n "$curl_opts" ]; then
     options="$options $curl_opts"
 fi
 
+echo "verify_ssl = $verify_ssl"
+echo "silent = $silent"
+echo "verbose = $verbose"
+
 if [ "$verbose" = true ]; then
     echo "curl $options \\"
     echo "-H 'Content-Type: $CONTENT_TYPE' \\"
