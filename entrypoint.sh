@@ -216,28 +216,50 @@ if [ -n "$curl_opts" ]; then
     options="$options $curl_opts"
 fi
 
-# if [ "$verbose" = true ]; then
-#     echo "curl $options \\"
-#     echo "-H 'Content-Type: $CONTENT_TYPE' \\"
-#     echo "-H 'User-Agent: GitHub-Hookshot/$REQUEST_ID' \\"
-#     echo "-H 'X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE' \\"
-#     echo "-H 'X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256' \\"
-#     echo "-H 'X-GitHub-Delivery: $REQUEST_ID' \\"
-#     echo "-H 'X-GitHub-Event: $EVENT_NAME' \\"
+if [ "$verbose" = true ]; then
+    echo "curl $options \\"
+    echo "-H 'Content-Type: $CONTENT_TYPE' \\"
+    echo "-H 'User-Agent: GitHub-Hookshot/$REQUEST_ID' \\"
+    echo "-H 'X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE' \\"
+    echo "-H 'X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256' \\"
+    echo "-H 'X-GitHub-Delivery: $REQUEST_ID' \\"
+    echo "-H 'X-GitHub-Event: $EVENT_NAME' \\"
 
-#     if [ "$curl_connection_close" = true ]; then
-#         echo "-H 'Connection: close' \\"
-#     fi
+    if [ "$curl_connection_close" = true ]; then
+        echo "-H 'Connection: close' \\"
+    fi
 
-#     echo "--data '$WEBHOOK_DATA'"
-# fi
+    echo "--data '$WEBHOOK_DATA'"
+fi
 
-# set +e
+set +e
 
-auth_header=''
+# auth_header=''
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
-    auth_header="-H \"Authorization: Bearer $webhook_auth\""
+    # auth_header="-H \"Authorization: Bearer $webhook_auth\""
+    if [ "$curl_connection_close" = true ]; then
+        response=$(curl $options \
+        -H "Authorization: Bearer $webhook_auth" \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+        -H "X-GitHub-Delivery: $REQUEST_ID" \
+        -H "X-GitHub-Event: $EVENT_NAME" \
+        -H "Connection: close" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+    else
+        response=$(curl $options \
+        -H "Authorization: Bearer $webhook_auth" \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+        -H "X-GitHub-Delivery: $REQUEST_ID" \
+        -H "X-GitHub-Event: $EVENT_NAME" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+    fi
 elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
     header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
     header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
@@ -247,43 +269,108 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         # and consider a potential fail-safe for user error, and resort to setting the
         # entire value as an Authorization token - the attempt at trying to resolve what 
         # the author meant may or may not be a better approach than just letting it error?
-        auth_header="-H \"Authorization: $webhook_auth\""
+        # auth_header="-H \"Authorization: $webhook_auth\""
+        if [ "$curl_connection_close" = true ]; then
+            response=$(curl $options \
+            -H "Authorization: $webhook_auth" \
+            -H "Content-Type: $CONTENT_TYPE" \
+            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+            -H "X-GitHub-Delivery: $REQUEST_ID" \
+            -H "X-GitHub-Event: $EVENT_NAME" \
+            -H "Connection: close" \
+            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+        else
+            response=$(curl $options \
+            -H "Authorization: $webhook_auth" \
+            -H "Content-Type: $CONTENT_TYPE" \
+            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+            -H "X-GitHub-Delivery: $REQUEST_ID" \
+            -H "X-GitHub-Event: $EVENT_NAME" \
+            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+        fi
     else
-        auth_header="-H \"$header_name: $header_value\""
+        # auth_header="-H \"$header_name: $header_value\""
+        if [ "$curl_connection_close" = true ]; then
+            response=$(curl $options \
+            -H "$header_name: $header_value" \
+            -H "Content-Type: $CONTENT_TYPE" \
+            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+            -H "X-GitHub-Delivery: $REQUEST_ID" \
+            -H "X-GitHub-Event: $EVENT_NAME" \
+            -H "Connection: close" \
+            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+        else
+            response=$(curl $options \
+            -H "$header_name: $header_value" \
+            -H "Content-Type: $CONTENT_TYPE" \
+            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+            -H "X-GitHub-Delivery: $REQUEST_ID" \
+            -H "X-GitHub-Event: $EVENT_NAME" \
+            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+        fi
+    fi
+else
+    if [ "$curl_connection_close" = true ]; then
+        response=$(curl $options \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+        -H "X-GitHub-Delivery: $REQUEST_ID" \
+        -H "X-GitHub-Event: $EVENT_NAME" \
+        -H "Connection: close" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+    else
+        response=$(curl $options \
+        -H "Content-Type: $CONTENT_TYPE" \
+        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+        -H "X-GitHub-Delivery: $REQUEST_ID" \
+        -H "X-GitHub-Event: $EVENT_NAME" \
+        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
     fi
 fi
 
-headers="-H \"Content-Type: $CONTENT_TYPE\""
-headers="$headers -H \"User-Agent: GitHub-Hookshot/$REQUEST_ID\""
-headers="$headers -H \"X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE\""
-headers="$headers -H \"X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256\""
-headers="$headers -H \"X-GitHub-Delivery: $REQUEST_ID\""
-headers="$headers -H \"X-GitHub-Event: $EVENT_NAME\""
+# headers="-H \"Content-Type: $CONTENT_TYPE\""
+# headers="$headers -H \"User-Agent: GitHub-Hookshot/$REQUEST_ID\""
+# headers="$headers -H \"X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE\""
+# headers="$headers -H \"X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256\""
+# headers="$headers -H \"X-GitHub-Delivery: $REQUEST_ID\""
+# headers="$headers -H \"X-GitHub-Event: $EVENT_NAME\""
 
-if [ "$curl_connection_close" = true ]; then
-    headers="$headers -H \"Connection: close\""
-fi
+# if [ "$curl_connection_close" = true ]; then
+#     headers="$headers -H \"Connection: close\""
+# fi
 
-if [ "$verbose" = true ]; then    
-    echo "curl $options \\"
+# if [ "$verbose" = true ]; then
+#     echo "curl $options \\"
     
-    if [ -n "$auth_header" ]; then
-        echo "$auth_header $headers \\"
-    else
-        echo "$headers \\"
-    fi
+#     if [ -n "$auth_header" ]; then
+#         echo "$auth_header $headers \\"
+#     else
+#         echo "$headers \\"
+#     fi
     
-    echo "--data '$WEBHOOK_DATA'"
+#     echo "--data '$WEBHOOK_DATA'"
 
-    # some console logs will remove the log statement if its a URL
-    # so we need to remove the protocol if we want to display this
-    noproto_webhook_url=`echo $WEBHOOK_ENDPOINT | sed -E 's/^\s*.*:\/\///g'`
-    echo "WEBHOOK_ENDPOINT: $noproto_webhook_url"
-fi
+#     # some console logs will remove the log statement if its a URL
+#     # so we need to remove the protocol if we want to display this
+#     noproto_webhook_url=`echo $WEBHOOK_ENDPOINT | sed -E 's/^\s*.*:\/\///g'`
+#     echo "WEBHOOK_ENDPOINT: $noproto_webhook_url"
+# fi
 
-set +e
+# set +e
 
-response=$(curl $options $auth_header $headers --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+# response=$(curl $options $auth_header $headers --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
 CURL_STATUS=$?
 
