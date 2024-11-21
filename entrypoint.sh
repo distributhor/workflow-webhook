@@ -246,10 +246,12 @@ if [ "$curl_connection_close" = true ]; then
     headers="$headers -H 'Connection: close'"
 fi
 
+echo "$WEBHOOK_ENDPOINT"
+
 if [ "$verbose" = true ]; then
-    echo "curl $options \\"
+    echo "curl $options \"
     if [ -n "$auth_header" ]; then
-        echo "$auth_header \\"
+        echo "$auth_header \"
     fi
     echo "$headers \\"
     echo "--data '$WEBHOOK_DATA' $WEBHOOK_ENDPOINT"
