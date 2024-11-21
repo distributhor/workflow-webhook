@@ -98,15 +98,19 @@ else
 
     if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
         RAW_FILE_DATA=`cat $GITHUB_EVENT_PATH`
-        WEBHOOK_DATA=$(echo -n "$RAW_FILE_DATA" | jq -c '')
+        echo "DEBUG JQ: A"
+        WEBHOOK_DATA=$(echo -n "$RAW_FILE_DATA" | jq -c '.')
     else
         WEBHOOK_DATA=$(jo event="$EVENT_NAME" repository="$GITHUB_REPOSITORY" commit="$GITHUB_SHA" ref="$GITHUB_REF" head="$GITHUB_HEAD_REF" workflow="$GITHUB_WORKFLOW")
     fi
     
     if [ -n "$data" ]; then
-        CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
+        echo "DEBUG JQ: B"
+        CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '.')
+        echo "DEBUG JQ: C"
         WEBHOOK_DATA=$(jq -s '.[0] * .[1]' <(echo $WEBHOOK_DATA) <(jo requestID="$REQUEST_ID" data="$CUSTOM_JSON_DATA"))
     else
+        echo "DEBUG JQ: D"
         WEBHOOK_DATA=$(jq -s '.[0] * .[1]' <(echo $WEBHOOK_DATA) <(jo requestID="$REQUEST_ID"))
     fi
 
