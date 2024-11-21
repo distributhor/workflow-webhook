@@ -246,15 +246,18 @@ if [ "$curl_connection_close" = true ]; then
     headers="$headers -H 'Connection: close'"
 fi
 
-echo "ABC${WEBHOOK_ENDPOINT}XYZ"
-
 if [ "$verbose" = true ]; then
     echo "curl $options \\"
+    
     if [ -n "$auth_header" ]; then
-        echo "$auth_header \\"
+        echo "$auth_header $headers \\"
+    else
+        echo "$headers \\"
     fi
-    echo "$headers \\"
-    echo "--data '$WEBHOOK_DATA' $WEBHOOK_ENDPOINT"
+    
+    echo "--data '$WEBHOOK_DATA'"
+    
+    echo $WEBHOOK_ENDPOINT | sed -E 's/^\s*.*:\/\///g'
 fi
 
 set +e
