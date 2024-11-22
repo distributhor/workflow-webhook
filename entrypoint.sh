@@ -216,37 +216,6 @@ if [ -n "$curl_opts" ]; then
     options="$options $curl_opts"
 fi
 
-echo "verify_ssl = $verify_ssl"
-echo "silent = $silent"
-echo "verbose = $verbose"
-echo "curl_connection_close = $curl_connection_close"
-echo "connection = $connection"
-
-if [ "$curl_connection_close" = true ]; then
-    echo "A"
-fi
-
-if [ "$curl_connection_close" = 'true' ]; then
-    echo "B"
-fi
-
-if [ "$connection" = true ]; then
-    echo "X"
-fi
-
-
-if [ "$connection" = 'true' ]; then
-    echo "Y"
-fi
-
-if [ "$connection" = false ]; then
-    echo "XX"
-fi
-
-if [ "$connection" = 'false' ]; then
-    echo "YY"
-fi
-
 if [ "$verbose" = true ]; then
     echo "curl $options \\"
     echo "-H 'Content-Type: $CONTENT_TYPE' \\"
@@ -255,11 +224,7 @@ if [ "$verbose" = true ]; then
     echo "-H 'X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256' \\"
     echo "-H 'X-GitHub-Delivery: $REQUEST_ID' \\"
     echo "-H 'X-GitHub-Event: $EVENT_NAME' \\"
-
-    if [ "$curl_connection_close" = true ]; then
-        echo "-H 'Connection: close' \\"
-    fi
-
+    echo "-H 'Connection: close' \\"
     echo "--data '$WEBHOOK_DATA'"
 fi
 
@@ -269,28 +234,16 @@ set +e
 
 if [ -n "$webhook_auth" ] && [ "$auth_type" == "bearer" ]; then
     # auth_header="-H \"Authorization: Bearer $webhook_auth\""
-    if [ "$curl_connection_close" = true ]; then
-        response=$(curl $options \
-        -H "Authorization: Bearer $webhook_auth" \
-        -H "Content-Type: $CONTENT_TYPE" \
-        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
-        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
-        -H "X-GitHub-Delivery: $REQUEST_ID" \
-        -H "X-GitHub-Event: $EVENT_NAME" \
-        -H "Connection: close" \
-        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
-    else
-        response=$(curl $options \
-        -H "Authorization: Bearer $webhook_auth" \
-        -H "Content-Type: $CONTENT_TYPE" \
-        -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
-        -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-        -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
-        -H "X-GitHub-Delivery: $REQUEST_ID" \
-        -H "X-GitHub-Event: $EVENT_NAME" \
-        --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
-    fi
+    response=$(curl $options \
+    -H "Authorization: Bearer $webhook_auth" \
+    -H "Content-Type: $CONTENT_TYPE" \
+    -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+    -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+    -H "X-GitHub-Delivery: $REQUEST_ID" \
+    -H "X-GitHub-Event: $EVENT_NAME" \
+    -H "Connection: close" \
+    --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
     header_name=`[[ $webhook_auth =~ ([^:]*) ]] && echo "${BASH_REMATCH[1]}"`
     header_value=`[[ $webhook_auth =~ :(.*) ]] && echo "${BASH_REMATCH[1]}"`
@@ -301,56 +254,8 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         # entire value as an Authorization token - the attempt at trying to resolve what 
         # the author meant may or may not be a better approach than just letting it error?
         # auth_header="-H \"Authorization: $webhook_auth\""
-        if [ "$curl_connection_close" = true ]; then
-            response=$(curl $options \
-            -H "Authorization: $webhook_auth" \
-            -H "Content-Type: $CONTENT_TYPE" \
-            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
-            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
-            -H "X-GitHub-Delivery: $REQUEST_ID" \
-            -H "X-GitHub-Event: $EVENT_NAME" \
-            -H "Connection: close" \
-            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
-        else
-            response=$(curl $options \
-            -H "Authorization: $webhook_auth" \
-            -H "Content-Type: $CONTENT_TYPE" \
-            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
-            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
-            -H "X-GitHub-Delivery: $REQUEST_ID" \
-            -H "X-GitHub-Event: $EVENT_NAME" \
-            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
-        fi
-    else
-        # auth_header="-H \"$header_name: $header_value\""
-        if [ "$curl_connection_close" = true ]; then
-            response=$(curl $options \
-            -H "$header_name: $header_value" \
-            -H "Content-Type: $CONTENT_TYPE" \
-            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
-            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
-            -H "X-GitHub-Delivery: $REQUEST_ID" \
-            -H "X-GitHub-Event: $EVENT_NAME" \
-            -H "Connection: close" \
-            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
-        else
-            response=$(curl $options \
-            -H "$header_name: $header_value" \
-            -H "Content-Type: $CONTENT_TYPE" \
-            -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
-            -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
-            -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
-            -H "X-GitHub-Delivery: $REQUEST_ID" \
-            -H "X-GitHub-Event: $EVENT_NAME" \
-            --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
-        fi
-    fi
-else
-    if [ "$curl_connection_close" = true ]; then
         response=$(curl $options \
+        -H "Authorization: $webhook_auth" \
         -H "Content-Type: $CONTENT_TYPE" \
         -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
@@ -360,15 +265,28 @@ else
         -H "Connection: close" \
         --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
     else
+        # auth_header="-H \"$header_name: $header_value\""
         response=$(curl $options \
+        -H "$header_name: $header_value" \
         -H "Content-Type: $CONTENT_TYPE" \
         -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
         -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
         -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
         -H "X-GitHub-Delivery: $REQUEST_ID" \
         -H "X-GitHub-Event: $EVENT_NAME" \
+        -H "Connection: close" \
         --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
     fi
+else
+    response=$(curl $options \
+    -H "Content-Type: $CONTENT_TYPE" \
+    -H "User-Agent: GitHub-Hookshot/$REQUEST_ID" \
+    -H "X-Hub-Signature: sha1=$WEBHOOK_SIGNATURE" \
+    -H "X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256" \
+    -H "X-GitHub-Delivery: $REQUEST_ID" \
+    -H "X-GitHub-Event: $EVENT_NAME" \
+    -H "Connection: close" \
+    --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 fi
 
 # headers="-H \"Content-Type: $CONTENT_TYPE\""
