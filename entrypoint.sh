@@ -132,7 +132,6 @@ else
 fi
 
 if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
-
     EVENT=`urlencode "$EVENT_NAME"`
     REPOSITORY=`urlencode "$GITHUB_REPOSITORY"`
     COMMIT=`urlencode "$GITHUB_SHA"`
@@ -146,29 +145,22 @@ if [ -n "$webhook_type" ] && [ "$webhook_type" == "form-urlencoded" ]; then
     if [ -n "$data" ]; then
         WEBHOOK_DATA="${WEBHOOK_DATA}&${data}"
     fi
-
 else
-
     CONTENT_TYPE="application/json"
 
     if [ -n "$webhook_type" ] && [ "$webhook_type" == "json-extended" ]; then
         RAW_FILE_DATA=`cat $GITHUB_EVENT_PATH`
-        echo "DEBUG JQ: A"
         WEBHOOK_DATA=$(echo -n "$RAW_FILE_DATA" | jq -c '.')
     else
         WEBHOOK_DATA=$(jo event="$EVENT_NAME" repository="$GITHUB_REPOSITORY" commit="$GITHUB_SHA" ref="$GITHUB_REF" head="$GITHUB_HEAD_REF" workflow="$GITHUB_WORKFLOW")
     fi
     
     if [ -n "$data" ]; then
-        echo "DEBUG JQ: B"
-        CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
-        echo "DEBUG JQ: C"
+        CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '.')
         WEBHOOK_DATA=$(jq -s '.[0] * .[1]' <(echo $WEBHOOK_DATA) <(jo requestID="$REQUEST_ID" data="$CUSTOM_JSON_DATA"))
     else
-        echo "DEBUG JQ: D"
         WEBHOOK_DATA=$(jq -s '.[0] * .[1]' <(echo $WEBHOOK_DATA) <(jo requestID="$REQUEST_ID"))
     fi
-
 fi
 
 WEBHOOK_SIGNATURE=$(echo -n "$WEBHOOK_DATA" | openssl dgst -sha1 -hmac "$webhook_secret" -binary | xxd -p)
@@ -253,6 +245,7 @@ elif [ -n "$webhook_auth" ] && [ "$auth_type" == "header" ]; then
         # and consider a potential fail-safe for user error, and resort to setting the
         # entire value as an Authorization token - the attempt at trying to resolve what 
         # the author meant may or may not be a better approach than just letting it error?
+        #
         # auth_header="-H \"Authorization: $webhook_auth\""
         response=$(curl $options \
         -H "Authorization: $webhook_auth" \
@@ -295,22 +288,16 @@ fi
 # headers="$headers -H \"X-Hub-Signature-256: sha256=$WEBHOOK_SIGNATURE_256\""
 # headers="$headers -H \"X-GitHub-Delivery: $REQUEST_ID\""
 # headers="$headers -H \"X-GitHub-Event: $EVENT_NAME\""
-
-# if [ "$curl_connection_close" = true ]; then
-#     headers="$headers -H \"Connection: close\""
-# fi
+# headers="$headers -H \"Connection: close\""
 
 # if [ "$verbose" = true ]; then
 #     echo "curl $options \\"
-    
 #     if [ -n "$auth_header" ]; then
 #         echo "$auth_header $headers \\"
 #     else
 #         echo "$headers \\"
 #     fi
-    
 #     echo "--data '$WEBHOOK_DATA'"
-
 #     # some console logs will remove the log statement if its a URL
 #     # so we need to remove the protocol if we want to display this
 #     noproto_webhook_url=`echo $WEBHOOK_ENDPOINT | sed -E 's/^\s*.*:\/\///g'`
