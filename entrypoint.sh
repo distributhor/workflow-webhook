@@ -27,8 +27,8 @@ for var in "${!INPUT_@}"; do
   fi
 done
 
-# The following manual variable conversions are still necessary for backwards compatibility with previous versions.
-# This is now considered deprecated, and for v4 of this webhook it will be removed.
+# For backwards compatibility, 
+# may be deprecated in future major version
 if [ -n "$WEBHOOK_AUTH" ]; then
     webhook_auth=$WEBHOOK_AUTH
 fi
