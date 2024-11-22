@@ -161,7 +161,7 @@ else
     
     if [ -n "$data" ]; then
         echo "DEBUG JQ: B"
-        CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '.')
+        CUSTOM_JSON_DATA=$(echo -n "$data" | jq -c '')
         echo "DEBUG JQ: C"
         WEBHOOK_DATA=$(jq -s '.[0] * .[1]' <(echo $WEBHOOK_DATA) <(jo requestID="$REQUEST_ID" data="$CUSTOM_JSON_DATA"))
     else
