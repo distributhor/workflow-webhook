@@ -226,36 +226,25 @@ if [ "$curl_connection_close" = true ]; then
     echo "A"
 fi
 
-if [ "$curl_connection_close" == true ]; then
+if [ "$curl_connection_close" = 'true' ]; then
     echo "B"
-fi
-
-if [ "$curl_connection_close" == 'true' ]; then
-    echo "C"
 fi
 
 if [ "$connection" = true ]; then
     echo "X"
 fi
 
-if [ "$connection" == true ]; then
-    echo "Y"
-fi
 
-if [ "$connection" == 'true' ]; then
-    echo "Z"
+if [ "$connection" = 'true' ]; then
+    echo "Y"
 fi
 
 if [ "$connection" = false ]; then
     echo "XX"
 fi
 
-if [ "$connection" == false ]; then
+if [ "$connection" = 'false' ]; then
     echo "YY"
-fi
-
-if [ "$connection" == 'false' ]; then
-    echo "ZZ"
 fi
 
 if [ "$verbose" = true ]; then
