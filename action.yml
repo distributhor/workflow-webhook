@@ -23,6 +23,9 @@ inputs:
     description: 'Optional. Set a maximum time, in seconds, the request to the server can take, before being cancelled.'
   curl_opts:
     description: 'Optional (and experimental). Pass arbitrary options to the curl request.'
+  connection:
+    description: 'Optional. Set to true to add the "Connection: close" header to the request.'
+    default: true
   verify_ssl:
     description: 'Optional. Set to false to disable verification of SSL certificates.'
     default: true
