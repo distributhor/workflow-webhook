@@ -219,6 +219,32 @@ fi
 echo "verify_ssl = $verify_ssl"
 echo "silent = $silent"
 echo "verbose = $verbose"
+echo "curl_connection_close = $curl_connection_close"
+echo "close_conn = $close_conn"
+
+if [ "$curl_connection_close" = true ]; then
+    echo "A"
+fi
+
+if [ "$curl_connection_close" == true ]; then
+    echo "B"
+fi
+
+if [ "$curl_connection_close" == 'true' ]; then
+    echo "C"
+fi
+
+if [ "$close_conn" = true ]; then
+    echo "X"
+fi
+
+if [ "$close_conn" == true ]; then
+    echo "Y"
+fi
+
+if [ "$close_conn" == 'true' ]; then
+    echo "Z"
+fi
 
 if [ "$verbose" = true ]; then
     echo "curl $options \\"
