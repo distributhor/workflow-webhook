@@ -61,6 +61,10 @@ if [ -n "$VERIFY_SSL" ]; then
     verify_ssl=$VERIFY_SSL
 fi
 
+if [ -n "$CA_BUNDLE" ]; then
+    ca_bundle=$CA_BUNDLE
+fi
+
 if [ -n "$TIMEOUT" ]; then
     timeout=$TIMEOUT
 fi
@@ -194,6 +198,11 @@ fi
 
 if [ "$verify_ssl" = false ]; then
     options="$options -k"
+fi
+
+if [ "$verify_ssl" = true ] && [ -n "$ca_bundle" ]; then
+    echo $ca_bundle > /ca.crt
+    options="$options -cacert /ca.crt"
 fi
 
 if [ -n "$timeout" ]; then
