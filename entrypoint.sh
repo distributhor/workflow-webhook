@@ -317,6 +317,9 @@ fi
 
 # response=$(curl $options $auth_header $headers --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
 
+# cleanup certificate payload
+rm -rf /ca_bundle.crt
+
 CURL_STATUS=$?
 
 # echo "response-body=$response" >> $GITHUB_OUTPUT
