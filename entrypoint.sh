@@ -202,6 +202,7 @@ fi
 
 if [ "$verify_ssl" = true ] && [ -n "$base64_encoded_ca_bundle" ]; then
     echo $base64_encoded_ca_bundle | base64 -d > /ca_bundle.crt
+    cat /ca_bundle.crt
     options="$options --cacert /ca_bundle.crt"
 fi
 
