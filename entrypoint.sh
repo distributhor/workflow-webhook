@@ -61,6 +61,10 @@ if [ -n "$VERIFY_SSL" ]; then
     verify_ssl=$VERIFY_SSL
 fi
 
+if [ -n "$BASE64_ENCODED_CA_BUNDLE" ]; then
+    base64_encoded_ca_bundle=$BASE64_ENCODED_CA_BUNDLE
+fi
+
 if [ -n "$TIMEOUT" ]; then
     timeout=$TIMEOUT
 fi
@@ -196,6 +200,11 @@ if [ "$verify_ssl" = false ]; then
     options="$options -k"
 fi
 
+if [ "$verify_ssl" = true ] && [ -n "$base64_encoded_ca_bundle" ]; then
+    echo $base64_encoded_ca_bundle | base64 -d > /ca_bundle.crt
+    options="$options --cacert /ca_bundle.crt"
+fi
+
 if [ -n "$timeout" ]; then
     options="$options --connect-timeout $timeout"
 fi
@@ -307,6 +316,9 @@ fi
 # set +e
 
 # response=$(curl $options $auth_header $headers --data "$WEBHOOK_DATA" $WEBHOOK_ENDPOINT)
+
+# cleanup certificate payload
+rm -rf /ca_bundle.crt
 
 CURL_STATUS=$?
 
